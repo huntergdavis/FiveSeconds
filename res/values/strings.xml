@@ -3,6 +3,6 @@
     <string name="app_name">5 Seconds</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_game_select_screen">GameSelectScreen</string>
+    <string name="title_activity_game_select_screen">5 Seconds</string>
 
 </resources>
