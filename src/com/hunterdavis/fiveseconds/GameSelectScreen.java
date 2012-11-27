@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 
 // The game select screen is the main 'hub' of 5 seconds
-// TODO: write a title screen class that can be re-used, takes (raw sound, image, timeout)
 // TODO: write a credits class that can be re-used, takes (raw txt file reference)
 
 
