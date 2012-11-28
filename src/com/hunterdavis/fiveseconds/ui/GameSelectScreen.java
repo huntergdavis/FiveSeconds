@@ -1,20 +1,18 @@
 package com.hunterdavis.fiveseconds.ui;
 
-import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.R.drawable;
-import com.hunterdavis.fiveseconds.R.layout;
-import com.hunterdavis.fiveseconds.R.menu;
-import com.hunterdavis.fiveseconds.R.raw;
-import com.hunterdavis.fiveseconds.title.TitleScreen;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.credits.CreditsScreen;
+import com.hunterdavis.fiveseconds.title.TitleScreen;
 
 // The game select screen is the main 'hub' of 5 seconds
-// TODO: write a credits class that can be re-used, takes (raw txt file reference)
-
 
 public class GameSelectScreen extends Activity {
 
@@ -22,16 +20,38 @@ public class GameSelectScreen extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_select_screen);
-        
-		// create the new title screen intent
-		Intent titleIntent = new Intent(this, TitleScreen.class);
-		titleIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-		titleIntent.putExtra(TitleScreen.wavReferenceIDString, R.raw.titletheme);
-		titleIntent.putExtra(TitleScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
-		titleIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);
+
+		Button testCreditsButton = (Button) findViewById(R.id.testcreditsbutton1);
+		testCreditsButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				// create the new credits screen intent
+				Intent creditsIntent = new Intent(getApplicationContext(), CreditsScreen.class);
+				creditsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				creditsIntent.putExtra(TitleScreen.wavReferenceIDString, R.raw.compressedtitletheme);
+				creditsIntent.putExtra(TitleScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
+				creditsIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);		
+				// start credits screen.
+				startActivity(creditsIntent);
+			}
+		});
 		
-		// start title screen.
-		startActivity(titleIntent);
+		Button testTitleButton = (Button) findViewById(R.id.testcreditsbutton1);
+		testTitleButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				// create the new title screen intent
+				Intent titleIntent = new Intent(getApplicationContext(), TitleScreen.class);
+				titleIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				titleIntent.putExtra(TitleScreen.wavReferenceIDString, R.raw.compressedtitletheme);
+				titleIntent.putExtra(TitleScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
+				titleIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);
+				
+				// start title screen.
+				startActivity(titleIntent);
+			}
+		});
+		
+		
+		
     }
 
     @Override

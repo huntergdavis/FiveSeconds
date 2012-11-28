@@ -79,7 +79,7 @@ public class TitleScreen extends Activity implements
 		if (wavReference != -1) {
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);
-			audioManager.setSongAndOnComplete(this,R.raw.titletheme, this);
+			audioManager.setSongAndOnComplete(this,R.raw.compressedtitletheme, this);
 			audioManager.playSong();
 		}
 		if (timeout > 0) {

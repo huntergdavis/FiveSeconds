@@ -1,26 +1,20 @@
 package com.hunterdavis.fiveseconds.credits;
 
-import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.R.id;
-import com.hunterdavis.fiveseconds.R.layout;
-import com.hunterdavis.fiveseconds.R.raw;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
+
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
+import com.hunterdavis.fiveseconds.R;
 
 
 public class CreditsScreen extends Activity {
 	MediaPlayer mediaPlayer;
 	EasyAudioManager audioManager; 
+	CreditsPanel creditsPanel;
 
 	public static final String wavReferenceIDString = "wavreference";
 	public static final String txtReferenceIDString = "txtreference";
@@ -45,17 +39,29 @@ public class CreditsScreen extends Activity {
 		setContentView(R.layout.creditsscreen);
 
 		// at this point the layout should be inflated, so
-		// maximize the title screen logo here
-
+		creditsPanel = (CreditsPanel) findViewById(R.id.SurfaceView01);
+		
 		if (wavReference != -1) {
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);
-			audioManager.setSong(this,R.raw.titletheme);
+			audioManager.setSong(this,R.raw.compressedtitletheme);
 			audioManager.playSong();
 		} 
 
 	}
-
+	@Override
+	protected void onPause() {
+		super.onPause();
+		creditsPanel.terminateThread();
+		System.gc();
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (creditsPanel.surfaceCreated == true) {
+			creditsPanel.createThread(creditsPanel.getHolder());
+		}
+	}
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

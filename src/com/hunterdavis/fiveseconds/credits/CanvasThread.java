@@ -18,8 +18,8 @@ public class CanvasThread extends Thread {
 	// amount of time to sleep for (in milliseconds)
 	private long delay = 70;
 
-
-	public CanvasThread(SurfaceHolder surfaceHolder, CreditsPanel panel, Context context, Handler handler) {
+	public CanvasThread(SurfaceHolder surfaceHolder, CreditsPanel panel,
+			Context context, Handler handler) {
 		_surfaceHolder = surfaceHolder;
 		_panel = panel;
 
@@ -28,7 +28,7 @@ public class CanvasThread extends Thread {
 	public void setRunning(boolean run) {
 		_run = run;
 	}
-	
+
 	public void setDelay(long delayToSet) {
 		delay = delayToSet;
 	}
@@ -56,37 +56,45 @@ public class CanvasThread extends Thread {
 					Paint paint = new Paint();
 					paint.setColor(Color.WHITE);
 					// clear the screen with the black painter.
-					c.drawRect(0, 0, c.getWidth(), c.getHeight(),paint);
-					
+					c.drawRect(0, 0, c.getWidth(), c.getHeight(), paint);
+
 					// show us a nice divider
 					paint.setColor(Color.BLUE);
-					c.drawLine(0, (c.getHeight()/2+c.getHeight()/5), c.getWidth(), (c.getHeight()/2+c.getHeight()/5), paint);
-					c.drawLine(0, (c.getHeight()/2-c.getHeight()/5), c.getWidth(), (c.getHeight()/2-c.getHeight()/5), paint);
-					
+					c.drawLine(0, (c.getHeight() / 2 + c.getHeight() / 5),
+							c.getWidth(),
+							(c.getHeight() / 2 + c.getHeight() / 5), paint);
+					c.drawLine(0, (c.getHeight() / 2 - c.getHeight() / 5),
+							c.getWidth(),
+							(c.getHeight() / 2 - c.getHeight() / 5), paint);
+
 					// draw a circle border
 					Paint borderPaint = new Paint();
-			        borderPaint.setColor(Color.BLUE);
-			        borderPaint.setAntiAlias(true);
-			        borderPaint.setStyle(Style.STROKE);
-			        borderPaint.setStrokeWidth(1);
-					c.drawCircle(c.getWidth()/2, c.getHeight()/2, c.getHeight()/10, borderPaint);
-					
-					
-					
+					borderPaint.setColor(Color.BLUE);
+					borderPaint.setAntiAlias(true);
+					borderPaint.setStyle(Style.STROKE);
+					borderPaint.setStrokeWidth(1);
+					c.drawCircle(c.getWidth() / 2, c.getHeight() / 2,
+							c.getHeight() / 10, borderPaint);
+
 					paint.setColor(Color.RED);
-					paint.setPathEffect( new DashPathEffect(new float[] { 15, 5, 8, 5 }, 
-							0) ); 
-					c.drawLine(0, c.getHeight()/2, ((c.getWidth()/2)-c.getHeight()/10), c.getHeight()/2, paint);
-					c.drawLine(((c.getWidth()/2)+c.getHeight()/10), c.getHeight()/2, c.getWidth(), c.getHeight()/2, paint);
-					//paint.setColor(Color.BLUE);
-					//c.drawLine(0, c.getHeight()/20, c.getWidth(), c.getHeight()/20, paint);
-					//c.drawLine(0, c.getHeight() - c.getHeight()/20, c.getWidth(), c.getHeight() - c.getHeight()/20, paint);
-					
-					
+					paint.setPathEffect(new DashPathEffect(new float[] { 15, 5,
+							8, 5 }, 0));
+					c.drawLine(0, c.getHeight() / 2,
+							((c.getWidth() / 2) - c.getHeight() / 10),
+							c.getHeight() / 2, paint);
+					c.drawLine(((c.getWidth() / 2) + c.getHeight() / 10),
+							c.getHeight() / 2, c.getWidth(), c.getHeight() / 2,
+							paint);
+					// paint.setColor(Color.BLUE);
+					// c.drawLine(0, c.getHeight()/20, c.getWidth(),
+					// c.getHeight()/20, paint);
+					// c.drawLine(0, c.getHeight() - c.getHeight()/20,
+					// c.getWidth(), c.getHeight() - c.getHeight()/20, paint);
+
 					paint = new Paint();
 					paint.setColor(Color.RED);
-					c.drawCircle(c.getWidth()/2, c.getHeight()/2, 2, paint);
-					
+					c.drawCircle(c.getWidth() / 2, c.getHeight() / 2, 2, paint);
+
 					// This is where we draw the game engine.
 					_panel.onDraw(c);
 				}
@@ -114,7 +122,7 @@ public class CanvasThread extends Thread {
 					CanvasThread.sleep(sleepTime);
 				}
 			} catch (InterruptedException ex) {
-				
+
 			}
 		}
 

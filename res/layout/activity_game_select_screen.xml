@@ -4,11 +4,30 @@
     android:layout_height="match_parent" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/hello_world"
         tools:context=".GameSelectScreen" />
+
+    <Button
+        android:id="@+id/testcreditsbutton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginBottom="67dp"
+        android:text="Test Credits View" />
+
+    <Button
+        android:id="@+id/testtitlebutton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignLeft="@+id/testcreditsbutton1"
+        android:layout_marginBottom="22dp"
+        android:text="Test Title Screen" />
 
 </RelativeLayout>

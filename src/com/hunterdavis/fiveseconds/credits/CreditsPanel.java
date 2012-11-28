@@ -1,22 +1,16 @@
 package com.hunterdavis.fiveseconds.credits;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.net.Uri;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 	// member variables
@@ -27,7 +21,7 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 	private int mHeight = 0;
 	private boolean gameOver = false;
 
-		@Override
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		synchronized (getHolder()) {
 
@@ -98,25 +92,24 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-
 	public void updateGameState() {
 
+		// if(gameOver == true) {
+		// return;
+		// }
 
-		//if(gameOver == true) {
-		//	return;
-	//	}
-		
 		// move player 1 a tick (based on testing)
-		//movePlayer1Tick();
+		// movePlayer1Tick();
 
 		// move player 2 a tick (based on difficulty)
-		//movePlayer2Tick();
+		// movePlayer2Tick();
 
 		// move the ball a tick (based on difficulty and bounces)
-		//int numberOfTicksToMoveBall = (numberOfBounces / 3) + (difficulty + 5 / 3);
-		//for(int i =0;i<numberOfTicksToMoveBall;i++) {
-		//	moveBallTick();
-		//}
+		// int numberOfTicksToMoveBall = (numberOfBounces / 3) + (difficulty + 5
+		// / 3);
+		// for(int i =0;i<numberOfTicksToMoveBall;i++) {
+		// moveBallTick();
+		// }
 	}
 
 	@Override
@@ -127,91 +120,92 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 
 		Paint paint = new Paint();
 
-		
-		// our player sizes should be a function both of difficulty and of screen size
-		//player2Size = mWidth/10 + (4 * difficulty);
-		//player1Size = mWidth/5 - (4*difficulty);
-		
-		
+		// our player sizes should be a function both of difficulty and of
+		// screen size
+		// player2Size = mWidth/10 + (4 * difficulty);
+		// player1Size = mWidth/5 - (4*difficulty);
+
 		// draw player 1
-		//paint.setColor(playerColor);
+		// paint.setColor(playerColor);
 		// test for out of bounds
-		//if ((player1Pos + player1Size) > mWidth) {
-		//	player1Pos = mWidth - player1Size - 1;
-		//}
-		//canvas.drawRect(player1Pos, (mHeight - paddleBuffer - playerHeight),
-		//		(player1Pos + player1Size), (mHeight - paddleBuffer), paint);
+		// if ((player1Pos + player1Size) > mWidth) {
+		// player1Pos = mWidth - player1Size - 1;
+		// }
+		// canvas.drawRect(player1Pos, (mHeight - paddleBuffer - playerHeight),
+		// (player1Pos + player1Size), (mHeight - paddleBuffer), paint);
 
 		// draw player 2
 		// test for out of bounds
-		//if ((player2Pos + player2Size) > mWidth) {
-		//	player2Pos = mWidth - player2Size - 1;
-		//}
-		//canvas.drawRect(player2Pos, (paddleBuffer), (player2Pos + player2Size),
-		//		(paddleBuffer + playerHeight), paint);
+		// if ((player2Pos + player2Size) > mWidth) {
+		// player2Pos = mWidth - player2Size - 1;
+		// }
+		// canvas.drawRect(player2Pos, (paddleBuffer), (player2Pos +
+		// player2Size),
+		// (paddleBuffer + playerHeight), paint);
 
 		// draw ball
-		//if (ballBitmap == null) {
-		//	ballSize = mWidth / 5;
-			// if we can't load somebody else's bitmap
-		//	if (selectedImageUri == null) {
-		//		Bitmap _scratch = BitmapFactory.decodeResource(getResources(),
-		//				R.drawable.megusta);
+		// if (ballBitmap == null) {
+		// ballSize = mWidth / 5;
+		// if we can't load somebody else's bitmap
+		// if (selectedImageUri == null) {
+		// Bitmap _scratch = BitmapFactory.decodeResource(getResources(),
+		// R.drawable.megusta);
 
-		//		if (_scratch == null) {
-		//			Toast.makeText(getContext(), "WTF", Toast.LENGTH_SHORT)
-		//					.show();
-		//		}
+		// if (_scratch == null) {
+		// Toast.makeText(getContext(), "WTF", Toast.LENGTH_SHORT)
+		// .show();
+		// }
 
-				// now scale the bitmap using the scale value
-		//		ballBitmap = Bitmap.createScaledBitmap(_scratch, ballSize,
-		//				ballSize, false);
-		//	} else {
-		//		// TODO decodefile function is at bottom of this file, use it
-				// THIS IS WHERE YOU LOAD FILE URIS AT
-		//		InputStream photoStream = null;
+		// now scale the bitmap using the scale value
+		// ballBitmap = Bitmap.createScaledBitmap(_scratch, ballSize,
+		// ballSize, false);
+		// } else {
+		// // TODO decodefile function is at bottom of this file, use it
+		// THIS IS WHERE YOU LOAD FILE URIS AT
+		// InputStream photoStream = null;
 
-		//		Context context = getContext();
-		//		try {
-		//			photoStream = context.getContentResolver().openInputStream(
-		//					selectedImageUri);
-		//		} catch (FileNotFoundException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
-		//		int scaleSize = decodeFile(photoStream, ballSize, ballSize);
-				
-		//		try {
-		//			photoStream = context.getContentResolver().openInputStream(
-		//					selectedImageUri);
-		//		} catch (FileNotFoundException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
-		//		BitmapFactory.Options o = new BitmapFactory.Options();
-		//		o.inSampleSize = scaleSize;
-				
-				
-		//		Bitmap photoBitmap = BitmapFactory.decodeStream(photoStream, null, o);
-		//		ballBitmap = Bitmap.createScaledBitmap(photoBitmap, ballSize, ballSize, true);
-		//		photoBitmap.recycle();
+		// Context context = getContext();
+		// try {
+		// photoStream = context.getContentResolver().openInputStream(
+		// selectedImageUri);
+		// } catch (FileNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// int scaleSize = decodeFile(photoStream, ballSize, ballSize);
 
-			//}
+		// try {
+		// photoStream = context.getContentResolver().openInputStream(
+		// selectedImageUri);
+		// } catch (FileNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// BitmapFactory.Options o = new BitmapFactory.Options();
+		// o.inSampleSize = scaleSize;
 
-			// canvas.drawCircle(ballPos.x + (ballSize / 2), ballPos.y
-			// + (ballSize / 2), (ballSize / 2), paint);
-		//}
+		// Bitmap photoBitmap = BitmapFactory.decodeStream(photoStream, null,
+		// o);
+		// ballBitmap = Bitmap.createScaledBitmap(photoBitmap, ballSize,
+		// ballSize, true);
+		// photoBitmap.recycle();
+
+		// }
+
+		// canvas.drawCircle(ballPos.x + (ballSize / 2), ballPos.y
+		// + (ballSize / 2), (ballSize / 2), paint);
+		// }
 
 		// draw the ball bitmap
-		///canvas.drawBitmap(ballBitmap, ballPos.x, ballPos.y, paint);
+		// /canvas.drawBitmap(ballBitmap, ballPos.x, ballPos.y, paint);
 
 		// draw score 1
-		//paint.setColor(scoreColor);
-		//canvas.drawText(String.valueOf(player1score) + " points", mWidth
-		//		- scorexbuffer, mHeight - 2, paint);
+		// paint.setColor(scoreColor);
+		// canvas.drawText(String.valueOf(player1score) + " points", mWidth
+		// - scorexbuffer, mHeight - 2, paint);
 		// draw score 2
-		//canvas.drawText(String.valueOf(player2score) + " points", mWidth
-		//		- scorexbuffer, 9, paint);
+		// canvas.drawText(String.valueOf(player2score) + " points", mWidth
+		// - scorexbuffer, 9, paint);
 
 		// draw game over if game over
 		if (gameOver == true) {
