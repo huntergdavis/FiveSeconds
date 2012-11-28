@@ -1,4 +1,10 @@
-package com.hunterdavis.fiveseconds;
+package com.hunterdavis.fiveseconds.title;
+
+import com.hunterdavis.easyaudiomanager.EasyAudioManager;
+import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.R.id;
+import com.hunterdavis.fiveseconds.R.layout;
+import com.hunterdavis.fiveseconds.R.raw;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,8 +23,17 @@ public class TitleScreen extends Activity implements
 
 	public static final String wavReferenceIDString = "wavreference";
 	public static final String imageReferenceIDString = "imgreference";
+	public static final String touchToExitBooleanID = "touchToExit";
+	public static final String exitOnWavePlayBooleanID = "exitOnWavPlay";
+	public static final String timeoutIntegerID = "timeout";
+	public static final String titleScreenModeID = "titleMode";
+
 	private int imgReference = -1;
 	private int wavReference = -1;
+	private boolean touchToExit = true;
+	private boolean exitOnWavPlay = false;
+	private int timeout = -1;
+	private EasyAudioManager audioManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +43,11 @@ public class TitleScreen extends Activity implements
 		if (startIntent != null) {
 			imgReference = startIntent.getIntExtra(imageReferenceIDString, -1);
 			wavReference = startIntent.getIntExtra(wavReferenceIDString, -1);
+			touchToExit = startIntent.getBooleanExtra(touchToExitBooleanID,
+					true);
+			exitOnWavPlay = startIntent.getBooleanExtra(
+					exitOnWavePlayBooleanID, false);
+			timeout = startIntent.getIntExtra(timeoutIntegerID, -1);
 		}
 
 		// Set window fullscreen and remove title bar
@@ -43,36 +63,36 @@ public class TitleScreen extends Activity implements
 			ImageView imageView = (ImageView) findViewById(R.id.titlescreen);
 			imageView.setImageResource(imgReference);
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-			OnClickListener buttonClick = new OnClickListener() {
+			if (touchToExit) {
+				OnClickListener buttonClick = new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					finish();
-				}
-			};
+					@Override
+					public void onClick(View v) {
+						finish();
+					}
+				};
 
-			imageView.setOnClickListener(buttonClick);
+				imageView.setOnClickListener(buttonClick);
+			}
 		}
 
 		if (wavReference != -1) {
-			mediaPlayer = MediaPlayer
-					.create(getBaseContext(), R.raw.titletheme);
-			mediaPlayer.setOnCompletionListener(this);
-			mediaPlayer.start();
-		} else {
-			if (imgReference != -1) {
-				TitleCountDown localTitleCounter = new TitleCountDown(4000,
-						1000);
-				localTitleCounter.start();
-			} else {
-				finish();
-			}
+			// create the audioManager
+			audioManager = new EasyAudioManager(this);
+			audioManager.setSongAndOnComplete(this,R.raw.titletheme, this);
+			audioManager.playSong();
+		}
+		if (timeout > 0) {
+			TitleCountDown localTitleCounter = new TitleCountDown(timeout, 1000);
+			localTitleCounter.start();
 		}
 
 	}
 
 	public void onCompletion(MediaPlayer arg0) {
-		finish();
+		if (exitOnWavPlay) {
+			finish();
+		}
 	}
 
 	// countdowntimer is an abstract class, so extend it and fill in methods
