@@ -24,30 +24,14 @@ public class GameSelectScreen extends Activity {
 		Button testCreditsButton = (Button) findViewById(R.id.testcreditsbutton1);
 		testCreditsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				// create the new credits screen intent
-				Intent creditsIntent = new Intent(getApplicationContext(), CreditsScreen.class);
-				creditsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				creditsIntent.putExtra(CreditsScreen.wavReferenceIDString, R.raw.compressedtitletheme);
-				//creditsIntent.putExtra(CreditsScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
-				creditsIntent.putExtra(CreditsScreen.txtReferenceIDString, R.raw.fivesecondscredits);
-				//creditsIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);		
-				// start credits screen.
-				startActivity(creditsIntent);
+				CreditsScreen.startCreditScreen(getApplicationContext(), R.raw.compressedtitletheme, R.raw.fivesecondscredits);
 			}
 		});
 		
 		Button testTitleButton = (Button) findViewById(R.id.testtitlebutton1);
 		testTitleButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				// create the new title screen intent
-				Intent titleIntent = new Intent(getApplicationContext(), TitleScreen.class);
-				titleIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				titleIntent.putExtra(TitleScreen.wavReferenceIDString, R.raw.compressedtitletheme);
-				titleIntent.putExtra(TitleScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
-				titleIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);
-				
-				// start title screen.
-				startActivity(titleIntent);
+				TitleScreen.startTitleScreen(getApplicationContext(), R.raw.compressedtitletheme, R.drawable.fivesecondstitle, false/*touchToExit*/, true/*exitOnWavComplete*/, -1/*timeout*/);
 			}
 		});
     }

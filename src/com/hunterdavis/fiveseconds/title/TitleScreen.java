@@ -7,6 +7,7 @@ import com.hunterdavis.fiveseconds.R.layout;
 import com.hunterdavis.fiveseconds.R.raw;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ public class TitleScreen extends Activity implements
 	public static final String touchToExitBooleanID = "touchToExit";
 	public static final String exitOnWavePlayBooleanID = "exitOnWavPlay";
 	public static final String timeoutIntegerID = "timeout";
-	public static final String titleScreenModeID = "titleMode";
 
 	private int imgReference = -1;
 	private int wavReference = -1;
@@ -34,6 +34,33 @@ public class TitleScreen extends Activity implements
 	private boolean exitOnWavPlay = false;
 	private int timeout = -1;
 	private EasyAudioManager audioManager;
+
+	public static final void startTitleScreen(Context context, int wavRefId,
+			int imageRefId, boolean touchToExit, boolean exitOnWavComplete,
+			int timeout) {
+		// create the new title screen intent
+		Intent titleIntent = new Intent(context, TitleScreen.class);
+		titleIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		titleIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		if (wavRefId != -1) {
+			titleIntent.putExtra(TitleScreen.wavReferenceIDString, wavRefId);
+		}
+		if (imageRefId != -1) {
+			titleIntent
+					.putExtra(TitleScreen.imageReferenceIDString, imageRefId);
+		}
+
+		titleIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID,
+				exitOnWavComplete);
+		titleIntent.putExtra(TitleScreen.touchToExitBooleanID, touchToExit);
+		if (timeout > 0) {
+			titleIntent.putExtra(TitleScreen.timeoutIntegerID, timeout);
+		}
+
+		// start title screen.
+		context.startActivity(titleIntent);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +106,8 @@ public class TitleScreen extends Activity implements
 		if (wavReference != -1) {
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);
-			audioManager.setSongAndOnComplete(this,R.raw.compressedtitletheme, this);
+			audioManager.setSongAndOnComplete(this, R.raw.compressedtitletheme,
+					this);
 			audioManager.playSong();
 		}
 		if (timeout > 0) {

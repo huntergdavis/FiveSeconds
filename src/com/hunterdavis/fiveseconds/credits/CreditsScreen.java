@@ -1,6 +1,7 @@
 package com.hunterdavis.fiveseconds.credits;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -20,6 +21,25 @@ public class CreditsScreen extends Activity {
 	public static final String txtReferenceIDString = "txtreference";
 	private int txtReference = -1;
 	private int wavReference = -1;
+	
+	public static final void startCreditScreen(Context context, int wavRefId,
+			int txtRefId) {
+		// create the new title screen intent
+		Intent creditsIntent = new Intent(context, CreditsScreen.class);
+		creditsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		creditsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		if (wavRefId != -1) {
+			creditsIntent.putExtra(CreditsScreen.wavReferenceIDString, wavRefId);
+		}
+		if (txtRefId != -1) {
+			creditsIntent
+					.putExtra(CreditsScreen.txtReferenceIDString, txtRefId);
+		}
+		
+		// start title screen.
+		context.startActivity(creditsIntent);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
