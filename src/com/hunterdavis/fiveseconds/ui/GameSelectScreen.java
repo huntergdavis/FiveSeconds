@@ -27,15 +27,16 @@ public class GameSelectScreen extends Activity {
 				// create the new credits screen intent
 				Intent creditsIntent = new Intent(getApplicationContext(), CreditsScreen.class);
 				creditsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				creditsIntent.putExtra(TitleScreen.wavReferenceIDString, R.raw.compressedtitletheme);
-				creditsIntent.putExtra(TitleScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
-				creditsIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);		
+				creditsIntent.putExtra(CreditsScreen.wavReferenceIDString, R.raw.compressedtitletheme);
+				//creditsIntent.putExtra(CreditsScreen.imageReferenceIDString, R.drawable.fivesecondstitle);
+				creditsIntent.putExtra(CreditsScreen.txtReferenceIDString, R.raw.fivesecondscredits);
+				//creditsIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID, true);		
 				// start credits screen.
 				startActivity(creditsIntent);
 			}
 		});
 		
-		Button testTitleButton = (Button) findViewById(R.id.testcreditsbutton1);
+		Button testTitleButton = (Button) findViewById(R.id.testtitlebutton1);
 		testTitleButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// create the new title screen intent
@@ -49,9 +50,6 @@ public class GameSelectScreen extends Activity {
 				startActivity(titleIntent);
 			}
 		});
-		
-		
-		
     }
 
     @Override

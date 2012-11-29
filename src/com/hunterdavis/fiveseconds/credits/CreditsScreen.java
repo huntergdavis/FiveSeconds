@@ -3,6 +3,7 @@ package com.hunterdavis.fiveseconds.credits;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,7 +30,7 @@ public class CreditsScreen extends Activity {
 		if (startIntent != null) {
 			txtReference = startIntent.getIntExtra(txtReferenceIDString, -1);
 			wavReference = startIntent.getIntExtra(wavReferenceIDString, -1);
-		}
+		} 
 
 		// Set window fullscreen and remove title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -40,11 +41,20 @@ public class CreditsScreen extends Activity {
 
 		// at this point the layout should be inflated, so
 		creditsPanel = (CreditsPanel) findViewById(R.id.SurfaceView01);
+		creditsPanel.readInCreditsTxt(txtReference);
 		
 		if (wavReference != -1) {
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);
-			audioManager.setSong(this,R.raw.compressedtitletheme);
+			audioManager.setSongAndOnComplete(this,R.raw.compressedtitletheme, new OnCompletionListener(){
+
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					mp.seekTo(0);
+					mp.start();
+				} 
+			
+			});
 			audioManager.playSong();
 		} 
 
