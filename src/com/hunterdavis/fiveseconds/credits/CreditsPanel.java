@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,7 +21,9 @@ import android.view.SurfaceView;
 
 class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 	// values
-	private static final int TextTickValue = 50;
+	private static float TextTickValue = (float) 1.5;
+	private static final float TextTickFastForwardSpeed = 9.0f;
+	private static final float TextTickSlowSpeed = 1.5f;
 
 	// member variables
 	private CanvasThread canvasthread;
@@ -80,13 +83,16 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 
 			int action = event.getAction();
 			if (action == MotionEvent.ACTION_DOWN) {
-
+				TextTickValue = TextTickFastForwardSpeed;
+				if(gameOver == true) {
+					doLose();
+				}
 				return true;
 			} else if (action == MotionEvent.ACTION_MOVE) {
-
+				
 				return true;
 			} else if (action == MotionEvent.ACTION_UP) {
-
+				TextTickValue = TextTickSlowSpeed;
 				return true;
 			}
 
@@ -170,7 +176,7 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 		for (int i = 0; i < numberOfLinesOnScreen; i++) {
 			if ((currentCreditTopLineItem + i) < credits.size()) {
 				credits.get(currentCreditTopLineItem + i).age++;
-				credits.get(currentCreditTopLineItem + i).accumulatedHeightTicks += 1.5;
+				credits.get(currentCreditTopLineItem + i).accumulatedHeightTicks += TextTickValue;
 			}
 		}
 		
@@ -181,6 +187,11 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		
 	}
+	
+	public void doLose() {
+            //quit to mainmenu
+            ((Activity) mContext).finish();
+    }
 
 	@Override
 	public void onDraw(Canvas canvas) {

@@ -13,7 +13,6 @@ import com.hunterdavis.fiveseconds.R;
 
 
 public class CreditsScreen extends Activity {
-	MediaPlayer mediaPlayer;
 	EasyAudioManager audioManager; 
 	CreditsPanel creditsPanel;
 
@@ -63,6 +62,7 @@ public class CreditsScreen extends Activity {
 	protected void onPause() {
 		super.onPause();
 		creditsPanel.terminateThread();
+		audioManager.pauseSong();
 		System.gc();
 	}
 	@Override
@@ -75,7 +75,8 @@ public class CreditsScreen extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mediaPlayer = null;
+		audioManager.pauseSong();
+		audioManager = null;
 	}
 
 }
