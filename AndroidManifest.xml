@@ -28,6 +28,10 @@
             android:name=".credits.CreditsScreen"
             android:label="@string/title_activity_credits_screen" >
         </activity>
+        <activity
+            android:name=".games.baloons.popxcolorbaloons.PopXColorBaloons"
+            android:label="@string/popxcolorbaloons_activity_credits_screen" >
+        </activity>
     </application>
 
 </manifest>

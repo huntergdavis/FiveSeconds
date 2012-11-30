@@ -16,18 +16,25 @@
         android:id="@+id/testcreditsbutton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_marginBottom="67dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="43dp"
         android:text="Test Credits View" />
 
     <Button
         android:id="@+id/testtitlebutton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
-        android:layout_alignLeft="@+id/testcreditsbutton1"
-        android:layout_marginBottom="22dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/testcreditsbutton1"
         android:text="Test Title Screen" />
+
+    <Button
+        android:id="@+id/testopopxcolorbaloonsbutton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/testtitlebutton1"
+        android:text="Test Pop X Color Baloons Screen" />
 
 </RelativeLayout>

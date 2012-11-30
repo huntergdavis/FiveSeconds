@@ -1,4 +1,4 @@
-package com.hunterdavis.fiveseconds.credits;
+package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,14 +11,14 @@ import android.view.SurfaceHolder;
 
 public class CanvasThread extends Thread {
 	private SurfaceHolder _surfaceHolder;
-	private CreditsPanel _panel;
+	private baloonPanel _panel;
 	private boolean _run = false;
 	// for consistent rendering
 	private long sleepTime;
 	// amount of time to sleep for (in milliseconds)
 	private long delay = 35;
 
-	public CanvasThread(SurfaceHolder surfaceHolder, CreditsPanel panel,
+	public CanvasThread(SurfaceHolder surfaceHolder, baloonPanel panel,
 			Context context, Handler handler) {
 		_surfaceHolder = surfaceHolder;
 		_panel = panel;
@@ -52,14 +52,16 @@ public class CanvasThread extends Thread {
 			try {
 				// lock canvas so nothing else can use it
 				c = _surfaceHolder.lockCanvas(null);
-				synchronized (_surfaceHolder) {
-					Paint paint = new Paint();
-					paint.setColor(Color.BLACK);
-					// clear the screen with the black painter.
-					c.drawRect(0, 0, c.getWidth(), c.getHeight(), paint);
+				if (c != null) {
+					synchronized (_surfaceHolder) {
+						Paint paint = new Paint();
+						paint.setColor(Color.BLACK);
+						// clear the screen with the black painter.
+						c.drawRect(0, 0, c.getWidth(), c.getHeight(), paint);
 
-					// This is where we draw the game engine.
-					_panel.onDraw(c);
+						// This is where we draw the game engine.
+						_panel.onDraw(c);
+					}
 				}
 			} finally {
 				// do this in a finally so that if an exception is thrown
