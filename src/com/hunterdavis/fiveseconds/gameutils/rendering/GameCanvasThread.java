@@ -1,28 +1,22 @@
-package com.hunterdavis.fiveseconds.credits;
+package com.hunterdavis.fiveseconds.gameutils.rendering;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.os.Handler;
 import android.view.SurfaceHolder;
 
-public class CanvasThread extends Thread {
+public class GameCanvasThread extends Thread {
 	private SurfaceHolder _surfaceHolder;
-	private CreditsPanel _panel;
+	private GameSurfaceView _panel;
 	private boolean _run = false;
 	// for consistent rendering
 	private long sleepTime;
 	// amount of time to sleep for (in milliseconds)
 	private long delay = 35;
 
-	public CanvasThread(SurfaceHolder surfaceHolder, CreditsPanel panel,
-			Context context, Handler handler) {
+	public GameCanvasThread(SurfaceHolder surfaceHolder, GameSurfaceView panel,
+			long renderDelay) {
 		_surfaceHolder = surfaceHolder;
 		_panel = panel;
-
+		delay = renderDelay;
 	}
 
 	public void setRunning(boolean run) {
@@ -52,14 +46,11 @@ public class CanvasThread extends Thread {
 			try {
 				// lock canvas so nothing else can use it
 				c = _surfaceHolder.lockCanvas(null);
-				synchronized (_surfaceHolder) {
-					Paint paint = new Paint();
-					paint.setColor(Color.BLACK);
-					// clear the screen with the black painter.
-					c.drawRect(0, 0, c.getWidth(), c.getHeight(), paint);
-
-					// This is where we draw the game engine.
-					_panel.onDraw(c);
+				if (c != null) {
+					synchronized (_surfaceHolder) {
+						// This is where we draw the game engine.
+						_panel.onDraw(c);
+					}
 				}
 			} finally {
 				// do this in a finally so that if an exception is thrown
@@ -82,7 +73,7 @@ public class CanvasThread extends Thread {
 			try {
 				// actual sleep code
 				if (sleepTime > 0) {
-					CanvasThread.sleep(sleepTime);
+					GameCanvasThread.sleep(sleepTime);
 				}
 			} catch (InterruptedException ex) {
 

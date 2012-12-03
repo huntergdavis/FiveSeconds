@@ -9,7 +9,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,16 +16,18 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 
-class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
+import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
+import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
+
+class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// values
 	private static float TextTickValue = (float) 1.5;
 	private static final float TextTickFastForwardSpeed = 9.0f;
 	private static final float TextTickSlowSpeed = 1.5f;
 
 	// member variables
-	private CanvasThread canvasthread;
+	private GameCanvasThread canvasthread;
 	public Boolean surfaceCreated;
 	public Context mContext;
 	private int mWidth = 0;
@@ -114,8 +115,7 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void createThread(SurfaceHolder holder) {
-		canvasthread = new CanvasThread(getHolder(), this, mContext,
-				new Handler());
+		canvasthread = new GameCanvasThread(getHolder(), this, 35);
 		canvasthread.setRunning(true);
 		canvasthread.start();
 	}
@@ -198,11 +198,14 @@ class CreditsPanel extends SurfaceView implements SurfaceHolder.Callback {
 
 		mWidth = canvas.getWidth();
 		mHeight = canvas.getHeight();
-
+		
 		if (paint == null) { 
 			paint = new Paint();
 			paint.setTextAlign(Paint.Align.CENTER);
 		}
+		paint.setColor(Color.BLACK);
+		// clear the screen with the black painter.
+		canvas.drawRect(0, 0, mWidth, mHeight, paint);
 
 		// draw game over if game over
 		if (gameOver == true) {
