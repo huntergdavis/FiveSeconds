@@ -36,6 +36,7 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	private int numberOfLinesOnScreen = 1;
 	List<creditsLineItem> credits = new ArrayList<creditsLineItem>();
 	Paint paint = null;
+	private String finalScore = "";
 
 	// each credits line is a tiny inner class for storing credits lines
 	class creditsLineItem {
@@ -56,17 +57,12 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void readInCreditsTxt(int creditsReference) {
+	public void readInCreditsTxt(int creditsReference, String scoreText) {
 		InputStream inputStream = getResources().openRawResource(
 				creditsReference);
 		BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(inputStream));
-		String eachLine = null;
-		try {
-			eachLine = bufferedReader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String eachLine = "";
 		while (eachLine != null) {
 			credits.add(new creditsLineItem(eachLine));
 			try {
@@ -74,6 +70,9 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		if ((scoreText != null) && !scoreText.equals("")) {
+			finalScore = scoreText;
 		}
 	}
 
@@ -84,12 +83,12 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			int action = event.getAction();
 			if (action == MotionEvent.ACTION_DOWN) {
 				TextTickValue = TextTickFastForwardSpeed;
-				if(gameOver == true) {
+				if (gameOver == true) {
 					doLose();
 				}
 				return true;
 			} else if (action == MotionEvent.ACTION_MOVE) {
-				
+
 				return true;
 			} else if (action == MotionEvent.ACTION_UP) {
 				TextTickValue = TextTickSlowSpeed;
@@ -108,7 +107,6 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		getHolder().addCallback(this);
 		setFocusable(true);
 	}
-
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -149,7 +147,7 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			gameOver = true;
 			return;
 		}
-		
+
 		if (credits.get(currentCreditTopLineItem).accumulatedHeightTicks > ((mHeight / 15) * numberOfLinesOnScreen)) {
 			numberOfLinesOnScreen++;
 		}
@@ -160,27 +158,27 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 				credits.get(currentCreditTopLineItem + i).accumulatedHeightTicks += TextTickValue;
 			}
 		}
-		
+
 		if (credits.get(currentCreditTopLineItem).accumulatedHeightTicks > mHeight) {
 			currentCreditTopLineItem++;
-			//numberOfLinesOnScreen--;
-			
+			// numberOfLinesOnScreen--;
+
 		}
-		
+
 	}
-	
+
 	public void doLose() {
-            //quit to mainmenu
-            ((Activity) mContext).finish();
-    }
+		// quit to mainmenu
+		((Activity) mContext).finish();
+	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
 
 		mWidth = canvas.getWidth();
 		mHeight = canvas.getHeight();
-		
-		if (paint == null) { 
+
+		if (paint == null) {
 			paint = new Paint();
 			paint.setTextAlign(Paint.Align.CENTER);
 		}
@@ -193,6 +191,7 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(30);
 			canvas.drawText("Game Over", (mWidth / 2), mHeight / 4, paint);
+			canvas.drawText(finalScore, mWidth / 2, (mHeight / 4) * 3, paint);
 		} else {
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(30);

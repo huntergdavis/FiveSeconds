@@ -1,5 +1,7 @@
 package com.hunterdavis.fiveseconds.ui;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +28,7 @@ public class GameSelectScreen extends Activity {
 		testCreditsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				CreditsScreen.startCreditScreen(getApplicationContext(),
-						R.raw.compressedtitletheme, R.raw.fivesecondscredits);
+						R.raw.compressedtitletheme, R.raw.fivesecondscredits, "Final Score: 50pts");
 			}
 		});
 
@@ -44,7 +46,7 @@ public class GameSelectScreen extends Activity {
 		testPopXColorBaloonsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				PopXColorBaloons.startPopXColorBaloonsScreen(
-						getApplicationContext(), 3);
+						getApplicationContext(),1 + (new Random().nextInt(2)));
 			}
 		});
 

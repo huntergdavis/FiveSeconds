@@ -76,8 +76,8 @@ public class PopXColorBaloons extends Activity {
 			setContentView(R.layout.popxcolorbaloons);
 			// at this point the layout should be inflated, so
 			popManyBaloonPanel = (baloonPanel) findViewById(R.id.SurfaceView01);
-			popManyBaloonPanel.numBaloonsToWin = numBaloonsToMatch;
-			
+			popManyBaloonPanel.setNumBaloonsToWin(numBaloonsToMatch);
+
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);
 			audioManager.setSongAndOnComplete(this, R.raw.compressedtitletheme,

@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.credits.CreditsPanel.creditsLineItem;
 
 
 public class CreditsScreen extends Activity {
@@ -19,11 +20,13 @@ public class CreditsScreen extends Activity {
 
 	public static final String wavReferenceIDString = "wavreference";
 	public static final String txtReferenceIDString = "txtreference";
+	public static final String finalScoreString = "finalScoreInfo";
 	private int txtReference = -1;
 	private int wavReference = -1;
+	private String finalScoreInfoText = "";
 	
 	public static final void startCreditScreen(Context context, int wavRefId,
-			int txtRefId) {
+			int txtRefId, String finalScoreText) {
 		// create the new title screen intent
 		Intent creditsIntent = new Intent(context, CreditsScreen.class);
 		creditsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -35,6 +38,10 @@ public class CreditsScreen extends Activity {
 		if (txtRefId != -1) {
 			creditsIntent
 					.putExtra(CreditsScreen.txtReferenceIDString, txtRefId);
+		}
+		if(null != finalScoreText) {
+			creditsIntent
+			.putExtra(CreditsScreen.finalScoreString, finalScoreText);
 		}
 		
 		// start title screen.
@@ -49,6 +56,8 @@ public class CreditsScreen extends Activity {
 		if (startIntent != null) {
 			txtReference = startIntent.getIntExtra(txtReferenceIDString, -1);
 			wavReference = startIntent.getIntExtra(wavReferenceIDString, -1);
+			finalScoreInfoText = startIntent.getStringExtra(finalScoreString);
+			
 		} 
 
 		// Set window fullscreen and remove title bar
@@ -60,7 +69,7 @@ public class CreditsScreen extends Activity {
 
 		// at this point the layout should be inflated, so
 		creditsPanel = (CreditsPanel) findViewById(R.id.SurfaceView01);
-		creditsPanel.readInCreditsTxt(txtReference);
+		creditsPanel.readInCreditsTxt(txtReference, finalScoreInfoText);
 		
 		if (wavReference != -1) {
 			// create the audioManager

@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Paint.Style;
 
+import com.hunterdavis.fiveseconds.gameutils.rendering.Effects;
 import com.hunterdavis.fiveseconds.gameutils.rendering.renderMath;
 
 // each credits line is a tiny inner class for storing credits lines
@@ -22,6 +23,7 @@ class Baloon {
 	Boolean leftTail;
 	int poppingFramesRemaining;
 	Boolean popped;
+	Random random;
 
 	Baloon(int xLoc, int yLoc, int initColor, int initSize) {
 		xLocation = xLoc;
@@ -35,6 +37,7 @@ class Baloon {
 		leftTail = new Random().nextBoolean();
 		poppingFramesRemaining = 3;
 		popped = false;
+		random = new Random();
 	}
 
 	public void pop() {
@@ -60,8 +63,24 @@ class Baloon {
 				- size);
 	}
 
-	// draw the baloon on the canvas with the given paint
-	public boolean drawBaloonAndTestForPop(Canvas canvas, Paint paint) {
+	public void updateSize(int initSize) {
+		size = initSize;
+		drawableRect = new RectF(xLocation - size, yLocation + size, xLocation
+				+ size, yLocation - size);
+	}
+
+	public boolean shouldThisBaloonDie() {
+		if (popped == true) {
+			poppingFramesRemaining -= 1;
+			updateSize(size + 5);
+		}
+		if (poppingFramesRemaining <= 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public void drawBaloon(Canvas canvas, Paint paint) {
 
 		paint.setColor(Color.BLACK);
 
@@ -80,20 +99,22 @@ class Baloon {
 					+ (tailLength / 8), paint);
 		}
 
-		if ((popped == false) || (poppingFramesRemaining > 1)) {
+		// draw the baloon oval
+		if ((popped == false) || (poppingFramesRemaining >= 1)) {
 			paint.setColor(color);
 			paint.setStyle(Style.FILL);
 			canvas.drawOval(drawableRect, paint);
 		}
-		if (poppingFramesRemaining == 2) {
 
+		// draw second from last frame
+		if (poppingFramesRemaining == 1) {
+			drawBaloonCracks(canvas, 10);
 		}
-		if (popped == true) {
-			poppingFramesRemaining -= 1;
-		}
-		if (poppingFramesRemaining <= 0) {
-			return true;
-		}
-		return false;
+
+	}
+
+	private void drawBaloonCracks(Canvas canvas, int numCracks) {
+		Effects.drawCracks(canvas, xLocation - size, xLocation + size,
+				yLocation + size, yLocation - size, numCracks, random);
 	}
 }
