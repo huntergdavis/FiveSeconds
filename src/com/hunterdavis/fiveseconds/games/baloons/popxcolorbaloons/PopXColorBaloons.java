@@ -14,14 +14,17 @@ import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
 public class PopXColorBaloons extends Activity {
+	public static final String numberToMatch = "numberToMatch";
 	EasyAudioManager audioManager;
 	baloonPanel popManyBaloonPanel;
 	private int timesResumed = 0;
+	private int numBaloonsToMatch = 3;
 
-	public static final void startPopXColorBaloonsScreen(Context context) {
+	public static final void startPopXColorBaloonsScreen(Context context, int numberBaloonsToMatch) {
 		// create the new title screen intent
 		Intent baloonsIntent = new Intent(context, PopXColorBaloons.class);
 		baloonsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		baloonsIntent.putExtra(numberToMatch, numberBaloonsToMatch);
 
 		// start title screen.
 		context.startActivity(baloonsIntent);
@@ -30,6 +33,13 @@ public class PopXColorBaloons extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Intent baloonIntent = getIntent();
+		Bundle extras = baloonIntent.getExtras();
+		int baloonsToMatch = extras.getInt(numberToMatch, -1);
+		if(baloonsToMatch > 0) {
+			numBaloonsToMatch = baloonsToMatch;
+		}
 
 		// Set window fullscreen and remove title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -66,6 +76,7 @@ public class PopXColorBaloons extends Activity {
 			setContentView(R.layout.popxcolorbaloons);
 			// at this point the layout should be inflated, so
 			popManyBaloonPanel = (baloonPanel) findViewById(R.id.SurfaceView01);
+			popManyBaloonPanel.numBaloonsToWin = numBaloonsToMatch;
 			
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);

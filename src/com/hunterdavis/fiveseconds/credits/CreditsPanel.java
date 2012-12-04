@@ -23,8 +23,8 @@ import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// values
 	private static float TextTickValue = (float) 1.5;
-	private static final float TextTickFastForwardSpeed = 9.0f;
-	private static final float TextTickSlowSpeed = 1.5f;
+	private static final float TextTickFastForwardSpeed = 18.0f;
+	private static final float TextTickSlowSpeed = 3.0f;
 
 	// member variables
 	public Boolean surfaceCreated;

@@ -18,10 +18,6 @@ public abstract class GameSurfaceView extends SurfaceView {
 	public abstract void updateGameState();
 	public abstract void onDraw(Canvas c);
 	
-	float fdistance(float x1, float y1, float x2, float y2) {
-		return (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	}
-	
 	public void createThread(SurfaceHolder holder) {
 		canvasthread = new GameCanvasThread(getHolder(), this, 35);
 		canvasthread.setRunning(true);

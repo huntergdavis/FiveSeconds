@@ -1,7 +1,5 @@
 package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
@@ -9,17 +7,23 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 import com.hunterdavis.fiveseconds.gameutils.rendering.namedColor;
 
 class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// member variables
-	public static final int numBaloons = 18;
+	public int numBaloons = 18;
+	public int numBaloonsToWin = 3;
+	public int colorToWin = 0;
 
 	@SuppressWarnings("unused")
 	private GameCanvasThread canvasthread;
@@ -30,10 +34,11 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	private int mHeight = 0;
 	private boolean gameOver = false;
 	private boolean firstRun = true;
-	List<Baloon> baloons = new ArrayList<Baloon>();
-	Baloon baloon = null;
-	List<namedColor> colors = new ArrayList<namedColor>();
-	Paint paint = null;
+	private Baloon baloons[];
+	// List<namedColor> colors = new ArrayList<namedColor>();
+	private namedColor colors[];
+	private int colorHitCount[];
+	private Paint paint = null;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -41,10 +46,14 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 			int action = event.getAction();
 			if (action == MotionEvent.ACTION_DOWN) {
+				if (!gameOver) {
+					testBaloonsForPops(event);
+				}
 				return true;
 			} else if (action == MotionEvent.ACTION_MOVE) {
 				return true;
 			} else if (action == MotionEvent.ACTION_UP) {
+
 				return true;
 			}
 			return true;
@@ -83,30 +92,40 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void initGameState() {
-		firstRun = false;
-
 		Random rand = new Random();
 
 		// init colors array with some nice colors
-		colors.add(new namedColor(Color.BLACK, "Black"));
-		colors.add(new namedColor(Color.BLUE, "Blue"));
-		colors.add(new namedColor(Color.DKGRAY, "Dark Gray"));
-		colors.add(new namedColor(Color.GRAY, "Gray"));
-		colors.add(new namedColor(Color.GREEN, "Green"));
-		colors.add(new namedColor(Color.LTGRAY, "Light Gray"));
-		colors.add(new namedColor(Color.MAGENTA, "Magenta"));
-		colors.add(new namedColor(Color.RED, "Red"));
-		colors.add(new namedColor(Color.YELLOW, "Yellow"));
-		colors.add(new namedColor(Color.CYAN, "Cyan"));
 
-		for (int i = 0; i < numBaloons; i++) {
-			baloons.add(new Baloon(rand.nextInt(15 + (mWidth - 15)), rand
-					.nextInt(15 + (mHeight - 15)), colors.get(rand
-					.nextInt(colors.size())).color, 6 + rand.nextInt(20)));
+		colorHitCount = new int[10];
+		for (int i = 0; i < 10; i++) {
+			colorHitCount[i] = 0;
 		}
+		colors = new namedColor[10];
+		colors[0] = new namedColor(Color.BLACK, "Black");
+		colors[1] = new namedColor(Color.BLUE, "Blue");
+		colors[2] = new namedColor(Color.DKGRAY, "Dark Gray");
+		colors[3] = new namedColor(Color.GRAY, "Gray");
+		colors[4] = new namedColor(Color.GREEN, "Green");
+		colors[5] = new namedColor(Color.LTGRAY, "Light Gray");
+		colors[6] = new namedColor(Color.MAGENTA, "Magenta");
+		colors[7] = new namedColor(Color.RED, "Red");
+		colors[8] = new namedColor(Color.YELLOW, "Yellow");
+		colors[9] = new namedColor(Color.CYAN, "Cyan");
+
+		baloons = new Baloon[numBaloons];
+		for (int i = 0; i < numBaloons; i++) {
+			baloons[i] = new Baloon(rand.nextInt(15 + (mWidth - 15)),
+					rand.nextInt(15 + (mHeight - 15)),
+					colors[rand.nextInt(colors.length)].color,
+					6 + rand.nextInt(20));
+		}
+
+		colorToWin = colors[rand.nextInt(colors.length)].color;
+
+		firstRun = false;
 	}
 
-	// we update the position of the text lines on screen in updateGameState
+	// we update the position of the baloons on screen in updateGameState
 	public void updateGameState() {
 
 		if (gameOver == true) {
@@ -123,16 +142,54 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void updateCurrentBaloonTick() {
-		for (int i = 0; i < baloons.size(); i++) {
-			baloon = baloons.get(i);
-
-			baloon.age++;
-			baloon.updateXandYLoc(baloon.xLocation, (baloon.yLocation - 1));
-
-			if (baloon.yLocation - baloon.size - 2 < 0) {
-				baloon.updateXandYLoc(baloon.xLocation, mHeight);
+		if (firstRun == true) {
+			return;
+		}
+		for (int i = 0; i < baloons.length; i++) {
+			baloons[i].age++;
+			if (baloons[i].poppingFramesRemaining <= 0) {
+				Log.e("SHIIIIIIIIT", "GOT HEEEEEREEEEE");
+				/*
+				 * Random rand = new Random(); baloon = new
+				 * Baloon(rand.nextInt(15 + (mWidth - 15)), rand.nextInt(15 +
+				 * (mHeight - 15)), colors.get(rand
+				 * .nextInt(colors.size())).color, 6 + rand.nextInt(20));
+				 */
 			}
-			baloons.set(i, baloon);
+
+			baloons[i].updateXandYLoc(baloons[i].xLocation,
+					(baloons[i].yLocation - 1));
+
+			if (baloons[i].yLocation - baloons[i].size - 2 < 0) {
+				baloons[i].updateXandYLoc(baloons[i].xLocation, mHeight);
+			}
+		}
+	}
+
+	public void testBaloonsForPops(MotionEvent event) {
+		float xVal = event.getX();
+		float yVal = event.getY();
+		for (int i = 0; i < baloons.length; i++) {
+			if (baloons[i].isPointWithinBaloon(xVal, yVal)) {
+				baloons[i].pop();
+				updateBaloonPopCount(baloons[i].color);
+			}
+		}
+	}
+
+	public void updateBaloonPopCount(int color) {
+		for (int i = 0; i < colors.length; i++) {
+			if (colors[i].color == color) {
+				colorHitCount[i]++;
+				if ((colorHitCount[i] >= numBaloonsToWin)
+						&& (colors[i].color == colorToWin)) {
+					gameOver = true;
+					CreditsScreen.startCreditScreen(getContext(),
+							R.raw.compressedtitletheme,
+							R.raw.fivesecondscredits);
+					doLose();
+				}
+			}
 		}
 	}
 
@@ -157,18 +214,21 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		canvas.drawRect(0, 0, mWidth, mHeight, paint);
 
 		// draw game over if game over
-		if (gameOver == true) {
-			paint.setColor(Color.WHITE);
-			paint.setTextSize(30);
-			canvas.drawText("Game Over", (mWidth / 2), mHeight / 4, paint);
-		} else {
+		if ((!gameOver) && (firstRun == false)) {
 			drawBaloons(canvas, paint);
 		}
+
 	}
 
 	public void drawBaloons(Canvas canvas, Paint paint) {
-		for (int i = 0; i < baloons.size(); i++) {
-			baloons.get(i).drawBaloon(canvas, paint);
+		for (int i = 0; i < baloons.length; i++) {
+			if (baloons[i].drawBaloonAndTestForPop(canvas, paint)) {
+				Random rand = new Random();
+				baloons[i] = new Baloon(rand.nextInt(15 + (mWidth - 15)),
+						rand.nextInt(15 + (mHeight - 15)),
+						colors[rand.nextInt(colors.length)].color,
+						6 + rand.nextInt(20));
+			}
 		}
 	}
 
