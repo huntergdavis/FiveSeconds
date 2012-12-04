@@ -18,29 +18,32 @@ import com.hunterdavis.fiveseconds.title.TitleScreen;
  * The Class PopXColorBaloons.
  */
 public class PopXColorBaloons extends Activity {
-	
+
 	/** The Constant numberToMatch. */
 	public static final String numberToMatch = "numberToMatch";
-	
+
 	/** The audio manager. */
 	EasyAudioManager audioManager;
-	
+
 	/** The pop many baloon panel. */
 	baloonPanel popManyBaloonPanel;
-	
+
 	/** The times resumed. */
 	private int timesResumed = 0;
-	
+
 	/** The num baloons to match. */
 	private int numBaloonsToMatch = 3;
 
 	/**
 	 * Start pop x color baloons screen.
-	 *
-	 * @param context the context
-	 * @param numberBaloonsToMatch the number baloons to match
+	 * 
+	 * @param context
+	 *            the context
+	 * @param numberBaloonsToMatch
+	 *            the number baloons to match
 	 */
-	public static final void startPopXColorBaloonsScreen(Context context, int numberBaloonsToMatch) {
+	public static final void startPopXColorBaloonsScreen(Context context,
+			int numberBaloonsToMatch) {
 		// create the new title screen intent
 		Intent baloonsIntent = new Intent(context, PopXColorBaloons.class);
 		baloonsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -50,17 +53,19 @@ public class PopXColorBaloons extends Activity {
 		context.startActivity(baloonsIntent);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		Intent baloonIntent = getIntent();
 		Bundle extras = baloonIntent.getExtras();
 		int baloonsToMatch = extras.getInt(numberToMatch, -1);
-		if(baloonsToMatch > 0) {
+		if (baloonsToMatch > 0) {
 			numBaloonsToMatch = baloonsToMatch;
 		}
 
@@ -69,17 +74,18 @@ public class PopXColorBaloons extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
 		// create a title screen and throw it up
 		TitleScreen
 				.startTitleScreen(getApplicationContext(),
-						R.raw.compressedtitletheme,
+						R.raw.popxcolorbaloonstitletheme,
 						R.drawable.popxcolorbaloonstitle, true/* touchToExit */,
 						true /* exitOnWavComplete */, -1/* timeout */);
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
@@ -94,7 +100,9 @@ public class PopXColorBaloons extends Activity {
 		System.gc();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -108,8 +116,10 @@ public class PopXColorBaloons extends Activity {
 			popManyBaloonPanel.setNumBaloonsToWin(numBaloonsToMatch);
 
 			// create the audioManager
-			audioManager = new EasyAudioManager(this);
-			audioManager.setSongAndOnComplete(this, R.raw.compressedtitletheme,
+			int[] soundBites = new int[1];
+			soundBites[0] = R.raw.baloonpop;
+			audioManager = new EasyAudioManager(this, soundBites);
+			audioManager.setSongAndOnComplete(this, R.raw.popxcolorbaloonstitletheme,
 					new OnCompletionListener() {
 
 						@Override
@@ -120,7 +130,7 @@ public class PopXColorBaloons extends Activity {
 
 					});
 			audioManager.playSong();
-			
+
 			popManyBaloonPanel.setAudioManager(audioManager);
 			if (popManyBaloonPanel.surfaceCreated == true) {
 				popManyBaloonPanel.createThread(popManyBaloonPanel.getHolder());
@@ -129,7 +139,9 @@ public class PopXColorBaloons extends Activity {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onDestroy()
 	 */
 	@Override

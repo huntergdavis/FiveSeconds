@@ -28,41 +28,41 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// values
 	/** The Text tick value. */
 	private static float TextTickValue = (float) 1.5;
-	
+
 	/** The Constant TextTickFastForwardSpeed. */
 	private static final float TextTickFastForwardSpeed = 18.0f;
-	
+
 	/** The Constant TextTickSlowSpeed. */
 	private static final float TextTickSlowSpeed = 3.0f;
 
 	// member variables
 	/** The surface created. */
 	public Boolean surfaceCreated;
-	
+
 	/** The m context. */
 	public Context mContext;
-	
+
 	/** The m width. */
 	private int mWidth = 0;
-	
+
 	/** The m height. */
 	private int mHeight = 0;
-	
+
 	/** The game over. */
 	private boolean gameOver = false;
-	
+
 	/** The current credit top line item. */
 	private int currentCreditTopLineItem = 0;
-	
+
 	/** The number of lines on screen. */
 	private int numberOfLinesOnScreen = 1;
-	
+
 	/** The credits. */
 	List<creditsLineItem> credits = new ArrayList<creditsLineItem>();
-	
+
 	/** The paint. */
 	Paint paint = null;
-	
+
 	/** The final score. */
 	private String finalScore = "";
 
@@ -71,20 +71,21 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	 * The Class creditsLineItem.
 	 */
 	class creditsLineItem {
-		
+
 		/** The line. */
 		String line;
-		
+
 		/** The age. */
 		int age;
-		
+
 		/** The accumulated height ticks. */
 		float accumulatedHeightTicks;
 
 		/**
 		 * Instantiates a new credits line item.
-		 *
-		 * @param lineToStore the line to store
+		 * 
+		 * @param lineToStore
+		 *            the line to store
 		 */
 		creditsLineItem(String lineToStore) {
 			line = lineToStore;
@@ -94,10 +95,13 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 		/**
 		 * Instantiates a new credits line item.
-		 *
-		 * @param lineToStore the line to store
-		 * @param ageToInit the age to init
-		 * @param yPosInitial the y pos initial
+		 * 
+		 * @param lineToStore
+		 *            the line to store
+		 * @param ageToInit
+		 *            the age to init
+		 * @param yPosInitial
+		 *            the y pos initial
 		 */
 		creditsLineItem(String lineToStore, int ageToInit, int yPosInitial) {
 			line = lineToStore;
@@ -108,9 +112,11 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	/**
 	 * Read in credits txt.
-	 *
-	 * @param creditsReference the credits reference
-	 * @param scoreText the score text
+	 * 
+	 * @param creditsReference
+	 *            the credits reference
+	 * @param scoreText
+	 *            the score text
 	 */
 	public void readInCreditsTxt(int creditsReference, String scoreText) {
 		InputStream inputStream = getResources().openRawResource(
@@ -131,7 +137,9 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.view.View#onTouchEvent(android.view.MotionEvent)
 	 */
 	@Override
@@ -159,9 +167,11 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	/**
 	 * Instantiates a new credits panel.
-	 *
-	 * @param context the context
-	 * @param attrs the attrs
+	 * 
+	 * @param context
+	 *            the context
+	 * @param attrs
+	 *            the attrs
 	 */
 	public CreditsPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -172,16 +182,24 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 	}
 
-	/* (non-Javadoc)
-	 * @see android.view.SurfaceHolder.Callback#surfaceChanged(android.view.SurfaceHolder, int, int, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.view.SurfaceHolder.Callback#surfaceChanged(android.view.SurfaceHolder
+	 * , int, int, int)
 	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 	}
 
-	/* (non-Javadoc)
-	 * @see android.view.SurfaceHolder.Callback#surfaceCreated(android.view.SurfaceHolder)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.view.SurfaceHolder.Callback#surfaceCreated(android.view.SurfaceHolder
+	 * )
 	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
@@ -194,8 +212,11 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see android.view.SurfaceHolder.Callback#surfaceDestroyed(android.view.SurfaceHolder)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.SurfaceHolder.Callback#surfaceDestroyed(android.view.
+	 * SurfaceHolder)
 	 */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -204,8 +225,11 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	}
 
 	// we update the position of the text lines on screen in updateGameState
-	/* (non-Javadoc)
-	 * @see com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView#updateGameState()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView#
+	 * updateGameState()
 	 */
 	public void updateGameState() {
 
@@ -254,8 +278,12 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		((Activity) mContext).finish();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView#onDraw(android.graphics.Canvas)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView#onDraw
+	 * (android.graphics.Canvas)
 	 */
 	@Override
 	public void onDraw(Canvas canvas) {
