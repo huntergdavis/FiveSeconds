@@ -1,6 +1,7 @@
 package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -20,6 +21,8 @@ import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 
 class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// member variables
+	public static final int numBaloons = 18;
+
 	@SuppressWarnings("unused")
 	private GameCanvasThread canvasthread;
 
@@ -28,63 +31,20 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	private int mWidth = 0;
 	private int mHeight = 0;
 	private boolean gameOver = false;
+	private boolean firstRun = true;
 	List<Baloon> baloons = new ArrayList<Baloon>();
+	List<namedColor> colors = new ArrayList<namedColor>();
 	Paint paint = null;
 
-	// each credits line is a tiny inner class for storing credits lines
-	class Baloon {
-		int xLocation;
-		int yLocation;
-		int size;
-		int age;
+	private class namedColor {
 		int color;
-		RectF drawableRect;
-		int tailLength;
-		Boolean leftTail;
+		String colorName;
 
-		Baloon(int xLoc, int yLoc, int initColor, int initSize) {
-			xLocation = xLoc;
-			yLocation = yLoc;
-			age = 0;
+		namedColor(int initColor, String name) {
 			color = initColor;
-			size = initSize;
-			drawableRect = new RectF(xLoc - size, yLoc + size, xLoc + size,
-					yLoc - size);
-			tailLength = initSize * 3;
-			leftTail = new Random().nextBoolean();
+			colorName = name;
 		}
-	}
-
-	public void drawBaloon(Baloon baloon, Canvas canvas, Paint paint) {
-
-		paint.setColor(Color.BLACK);
-
-		// first draw a 'string'
-		canvas.drawLine(baloon.xLocation, baloon.yLocation, baloon.xLocation,
-				baloon.yLocation + baloon.tailLength, paint);
-
-		// draw a little tail on the string
-		if (baloon.leftTail) {
-			canvas.drawLine(baloon.xLocation, baloon.yLocation
-					+ baloon.tailLength, baloon.xLocation
-					- (baloon.tailLength / 8), baloon.yLocation
-					+ baloon.tailLength + (baloon.tailLength / 8), paint);
-		} else {
-			canvas.drawLine(baloon.xLocation, baloon.yLocation
-					+ baloon.tailLength, baloon.xLocation
-					+ (baloon.tailLength / 8), baloon.yLocation
-					+ baloon.tailLength + (baloon.tailLength / 8), paint);
-		}
-		paint.setColor(baloon.color);
-		paint.setStyle(Style.FILL);
-		canvas.drawOval(baloon.drawableRect, paint);
-	}
-
-	public void drawBaloons(Canvas canvas, Paint paint) {
-		for (int i = 0; i < baloons.size(); i++) {
-			drawBaloon(baloons.get(i), canvas, paint);
-		}
-	}
+	};
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -106,8 +66,6 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		super(context, attrs);
 		mContext = context;
 		surfaceCreated = false;
-
-		baloons.add(new Baloon(32, 32, Color.GREEN, 15));
 
 		getHolder().addCallback(this);
 		setFocusable(true);
@@ -135,11 +93,40 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	}
 
+	public void initGameState() {
+		firstRun = false;
+
+		Random rand = new Random();
+
+		// init colors array with some nice colors
+		colors.add(new namedColor(Color.BLACK, "Black"));
+		colors.add(new namedColor(Color.BLUE, "Blue"));
+		colors.add(new namedColor(Color.DKGRAY, "Dark Gray"));
+		colors.add(new namedColor(Color.GRAY, "Gray"));
+		colors.add(new namedColor(Color.GREEN, "Green"));
+		colors.add(new namedColor(Color.LTGRAY, "Light Gray"));
+		colors.add(new namedColor(Color.MAGENTA, "Magenta"));
+		colors.add(new namedColor(Color.RED, "Red"));
+		colors.add(new namedColor(Color.YELLOW, "Yellow"));
+		colors.add(new namedColor(Color.CYAN, "Cyan"));
+
+		for (int i = 0; i < numBaloons; i++) {
+			baloons.add(new Baloon(rand.nextInt(15 + (mWidth - 15)), rand
+					.nextInt(15 + (mHeight - 15)), colors.get(rand
+					.nextInt(colors.size())).color, 6 + rand.nextInt(20)));
+		}
+	}
+
 	// we update the position of the text lines on screen in updateGameState
 	public void updateGameState() {
 
 		if (gameOver == true) {
 			return;
+		}
+
+		// if first game state, init
+		if ((mWidth > 0) && firstRun) {
+			initGameState();
 		}
 
 		// update current line a tick
@@ -177,6 +164,37 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			canvas.drawText("Game Over", (mWidth / 2), mHeight / 4, paint);
 		} else {
 			drawBaloons(canvas, paint);
+		}
+	}
+
+	public void drawBaloon(Baloon baloon, Canvas canvas, Paint paint) {
+
+		paint.setColor(Color.BLACK);
+
+		// first draw a 'string'
+		canvas.drawLine(baloon.xLocation, baloon.yLocation + baloon.size,
+				baloon.xLocation, baloon.yLocation + baloon.tailLength, paint);
+
+		// draw a little tail on the string
+		if (baloon.leftTail) {
+			canvas.drawLine(baloon.xLocation, baloon.yLocation
+					+ baloon.tailLength, baloon.xLocation
+					- (baloon.tailLength / 8), baloon.yLocation
+					+ baloon.tailLength + (baloon.tailLength / 8), paint);
+		} else {
+			canvas.drawLine(baloon.xLocation, baloon.yLocation
+					+ baloon.tailLength, baloon.xLocation
+					+ (baloon.tailLength / 8), baloon.yLocation
+					+ baloon.tailLength + (baloon.tailLength / 8), paint);
+		}
+		paint.setColor(baloon.color);
+		paint.setStyle(Style.FILL);
+		canvas.drawOval(baloon.drawableRect, paint);
+	}
+
+	public void drawBaloons(Canvas canvas, Paint paint) {
+		for (int i = 0; i < baloons.size(); i++) {
+			drawBaloon(baloons.get(i), canvas, paint);
 		}
 	}
 
