@@ -1,59 +1,88 @@
 package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
-import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Handler;
+import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
-	// values
-	private static float TextTickValue = (float) 1.5;
-	private static final float TextTickFastForwardSpeed = 9.0f;
-	private static final float TextTickSlowSpeed = 1.5f;
+import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
+import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 
+class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// member variables
+	@SuppressWarnings("unused")
 	private GameCanvasThread canvasthread;
+
 	public Boolean surfaceCreated;
 	public Context mContext;
 	private int mWidth = 0;
 	private int mHeight = 0;
 	private boolean gameOver = false;
-	private int currentCreditTopLineItem = 0;
-	private int numberOfLinesOnScreen = 1;
-	List<creditsLineItem> credits = new ArrayList<creditsLineItem>();
+	List<Baloon> baloons = new ArrayList<Baloon>();
 	Paint paint = null;
 
 	// each credits line is a tiny inner class for storing credits lines
-	class creditsLineItem {
-		String line;
+	class Baloon {
+		int xLocation;
+		int yLocation;
+		int size;
 		int age;
-		float accumulatedHeightTicks;
+		int color;
+		RectF drawableRect;
+		int tailLength;
+		Boolean leftTail;
 
-		creditsLineItem(String lineToStore) {
-			line = lineToStore;
+		Baloon(int xLoc, int yLoc, int initColor, int initSize) {
+			xLocation = xLoc;
+			yLocation = yLoc;
 			age = 0;
-			accumulatedHeightTicks = 0;
+			color = initColor;
+			size = initSize;
+			drawableRect = new RectF(xLoc - size, yLoc + size, xLoc + size,
+					yLoc - size);
+			tailLength = initSize * 3;
+			leftTail = new Random().nextBoolean();
 		}
+	}
 
-		creditsLineItem(String lineToStore, int ageToInit, int yPosInitial) {
-			line = lineToStore;
-			age = ageToInit;
-			accumulatedHeightTicks = yPosInitial;
+	public void drawBaloon(Baloon baloon, Canvas canvas, Paint paint) {
+
+		paint.setColor(Color.BLACK);
+
+		// first draw a 'string'
+		canvas.drawLine(baloon.xLocation, baloon.yLocation, baloon.xLocation,
+				baloon.yLocation + baloon.tailLength, paint);
+
+		// draw a little tail on the string
+		if (baloon.leftTail) {
+			canvas.drawLine(baloon.xLocation, baloon.yLocation
+					+ baloon.tailLength, baloon.xLocation
+					- (baloon.tailLength / 8), baloon.yLocation
+					+ baloon.tailLength + (baloon.tailLength / 8), paint);
+		} else {
+			canvas.drawLine(baloon.xLocation, baloon.yLocation
+					+ baloon.tailLength, baloon.xLocation
+					+ (baloon.tailLength / 8), baloon.yLocation
+					+ baloon.tailLength + (baloon.tailLength / 8), paint);
+		}
+		paint.setColor(baloon.color);
+		paint.setStyle(Style.FILL);
+		canvas.drawOval(baloon.drawableRect, paint);
+	}
+
+	public void drawBaloons(Canvas canvas, Paint paint) {
+		for (int i = 0; i < baloons.size(); i++) {
+			drawBaloon(baloons.get(i), canvas, paint);
 		}
 	}
 
@@ -63,34 +92,26 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 			int action = event.getAction();
 			if (action == MotionEvent.ACTION_DOWN) {
-				TextTickValue = TextTickFastForwardSpeed;
-				if (gameOver == true) {
-					doLose();
-				}
 				return true;
 			} else if (action == MotionEvent.ACTION_MOVE) {
-
 				return true;
 			} else if (action == MotionEvent.ACTION_UP) {
-				TextTickValue = TextTickSlowSpeed;
 				return true;
 			}
-
 			return true;
 		}
 	}
-
-
 
 	public baloonPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
 		surfaceCreated = false;
 
+		baloons.add(new Baloon(32, 32, Color.GREEN, 15));
+
 		getHolder().addCallback(this);
 		setFocusable(true);
 	}
-
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -127,28 +148,6 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	public void updateCurrentLineTick() {
 
-		if (credits.size() <= currentCreditTopLineItem) {
-			gameOver = true;
-			return;
-		}
-
-		if (credits.get(currentCreditTopLineItem).accumulatedHeightTicks > ((mHeight / 15) * numberOfLinesOnScreen)) {
-			numberOfLinesOnScreen++;
-		}
-
-		for (int i = 0; i < numberOfLinesOnScreen; i++) {
-			if ((currentCreditTopLineItem + i) < credits.size()) {
-				credits.get(currentCreditTopLineItem + i).age++;
-				credits.get(currentCreditTopLineItem + i).accumulatedHeightTicks += TextTickValue;
-			}
-		}
-
-		if (credits.get(currentCreditTopLineItem).accumulatedHeightTicks > mHeight) {
-			currentCreditTopLineItem++;
-			// numberOfLinesOnScreen--;
-
-		}
-
 	}
 
 	public void doLose() {
@@ -166,11 +165,10 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			paint = new Paint();
 			paint.setTextAlign(Paint.Align.CENTER);
 		}
-		
-		paint.setColor(Color.BLACK);
+
+		paint.setColor(Color.WHITE);
 		// clear the screen with the black painter.
 		canvas.drawRect(0, 0, mWidth, mHeight, paint);
-
 
 		// draw game over if game over
 		if (gameOver == true) {
@@ -178,18 +176,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			paint.setTextSize(30);
 			canvas.drawText("Game Over", (mWidth / 2), mHeight / 4, paint);
 		} else {
-			paint.setColor(Color.WHITE);
-			paint.setTextSize(30);
-
-			for (int i = 0; i < numberOfLinesOnScreen; i++) {
-				if (currentCreditTopLineItem + i < credits.size()) {
-					creditsLineItem currentLineItem = credits
-							.get(currentCreditTopLineItem + i);
-					canvas.drawText(currentLineItem.line, (mWidth / 2),
-							(mHeight - currentLineItem.accumulatedHeightTicks),
-							paint);
-				}
-			}
+			drawBaloons(canvas, paint);
 		}
 	}
 
