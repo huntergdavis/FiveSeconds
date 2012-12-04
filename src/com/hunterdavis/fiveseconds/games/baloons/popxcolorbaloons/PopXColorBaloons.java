@@ -119,7 +119,7 @@ public class PopXColorBaloons extends Activity {
 			int[] soundBites = new int[1];
 			soundBites[0] = R.raw.baloonpop;
 			audioManager = new EasyAudioManager(this, soundBites);
-			audioManager.setSongAndOnComplete(this, R.raw.popxcolorbaloonstitletheme,
+			audioManager.setSongAndOnComplete(this, R.raw.popxcolorbaloonsgametheme,
 					new OnCompletionListener() {
 
 						@Override

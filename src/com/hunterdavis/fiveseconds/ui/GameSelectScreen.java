@@ -53,7 +53,7 @@ public class GameSelectScreen extends Activity {
 		testPopXColorBaloonsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				PopXColorBaloons.startPopXColorBaloonsScreen(
-						getApplicationContext(),1 + (new Random().nextInt(2)));
+						getApplicationContext(),3 + (new Random().nextInt(2)));
 			}
 		});
 

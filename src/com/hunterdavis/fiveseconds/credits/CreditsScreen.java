@@ -104,7 +104,7 @@ public class CreditsScreen extends Activity {
 		if (wavReference != -1) {
 			// create the audioManager
 			audioManager = new EasyAudioManager(this);
-			audioManager.setSongAndOnComplete(this,R.raw.compressedtitletheme, new OnCompletionListener(){
+			audioManager.setSongAndOnComplete(this,wavReference, new OnCompletionListener(){
 
 				@Override
 				public void onCompletion(MediaPlayer mp) {

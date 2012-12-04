@@ -186,6 +186,10 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		colors[8] = new namedColor(Color.YELLOW, "Yellow");
 		colors[9] = new namedColor(Color.CYAN, "Cyan");
 
+		int colorRand = rand.nextInt(colors.length);
+		colorToWin = colors[colorRand].color;
+		colorToWinName = colors[colorRand].colorName;
+		
 		baloons = new Baloon[numBaloons];
 		int numBaloonsCanWin = 0;
 		for (int i = 0; i < numBaloons; i++) {
@@ -201,9 +205,6 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			makeOneBaloonInArrayColorToWin();
 		}
 
-		int colorRand = rand.nextInt(colors.length);
-		colorToWin = colors[colorRand].color;
-		colorToWinName = colors[colorRand].colorName;
 
 		firstRun = false;
 	}
@@ -212,7 +213,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	 * Make one baloon in array color to win.
 	 */
 	public void makeOneBaloonInArrayColorToWin() {
-		for (int i = 0; i < baloons.length; i++) {
+		for (int i = baloons.length-1; i > 0; i--) {
 			if (baloons[i].color != colorToWin) {
 				baloons[i].color = colorToWin;
 				return;
@@ -306,7 +307,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 						&& (colors[i].color == colorToWin)) {
 					gameOver = true;
 					CreditsScreen.startCreditScreen(getContext(),
-							R.raw.compressedtitletheme,
+							R.raw.popxcolorbaloonscreditstheme,
 							R.raw.popxcolorbaloonscredits, "You popped "
 									+ colorHitCount[i] + " "
 									+ colors[i].colorName + " baloons");
