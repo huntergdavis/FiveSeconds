@@ -17,6 +17,7 @@ import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 import com.hunterdavis.fiveseconds.gameutils.rendering.namedColor;
+import com.hunterdavis.fiveseconds.gameutils.time.GameClockCountDownTimer;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -54,6 +55,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	/** The game over. */
 	private boolean gameOver = false;
+	private boolean gameWin = false;
 
 	/** The first run. */
 	private boolean firstRun = true;
@@ -76,6 +78,9 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	/** The audio manager. */
 	private EasyAudioManager audioManager;
 
+	/** The Game CountDown Timer */
+	private GameClockCountDownTimer gameClockTimer;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -89,8 +94,16 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			if (action == MotionEvent.ACTION_DOWN) {
 				if (gameStarted == false) {
 					gameStarted = true;
+					gameClockTimer.start();
 				} else if (!gameOver) {
 					testBaloonsForPops(event);
+				} else if (gameOver) {
+					CreditsScreen.startCreditScreen(getContext(),
+							R.raw.popxcolorbaloonscreditstheme,
+							R.raw.popxcolorbaloonscredits, "You popped "
+									+ numBaloonsToWin + " " + colorToWinName
+									+ " baloons");
+					doLose();
 				}
 				return true;
 			} else if (action == MotionEvent.ACTION_MOVE) {
@@ -115,6 +128,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		super(context, attrs);
 		mContext = context;
 		surfaceCreated = false;
+		gameClockTimer = new GameClockCountDownTimer(5000, 10,5000);
 
 		getHolder().addCallback(this);
 		setFocusable(true);
@@ -189,7 +203,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		int colorRand = rand.nextInt(colors.length);
 		colorToWin = colors[colorRand].color;
 		colorToWinName = colors[colorRand].colorName;
-		
+
 		baloons = new Baloon[numBaloons];
 		int numBaloonsCanWin = 0;
 		for (int i = 0; i < numBaloons; i++) {
@@ -205,7 +219,6 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			makeOneBaloonInArrayColorToWin();
 		}
 
-
 		firstRun = false;
 	}
 
@@ -213,7 +226,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	 * Make one baloon in array color to win.
 	 */
 	public void makeOneBaloonInArrayColorToWin() {
-		for (int i = baloons.length-1; i > 0; i--) {
+		for (int i = baloons.length - 1; i > 0; i--) {
 			if (baloons[i].color != colorToWin) {
 				baloons[i].color = colorToWin;
 				return;
@@ -229,6 +242,10 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	 * updateGameState()
 	 */
 	public void updateGameState() {
+
+		if (gameClockTimer.gameOver == true) {
+			gameOver = true;
+		}
 
 		if (gameOver == true) {
 			return;
@@ -305,13 +322,10 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 				colorHitCount[i]++;
 				if ((colorHitCount[i] >= numBaloonsToWin)
 						&& (colors[i].color == colorToWin)) {
+					gameWin = true;
 					gameOver = true;
-					CreditsScreen.startCreditScreen(getContext(),
-							R.raw.popxcolorbaloonscreditstheme,
-							R.raw.popxcolorbaloonscredits, "You popped "
-									+ colorHitCount[i] + " "
-									+ colors[i].colorName + " baloons");
-					doLose();
+					gameClockTimer.cancel();
+
 				}
 			}
 		}
@@ -358,6 +372,24 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			canvas.drawText("Pop " + numBaloonsToWin + " " + colorToWinName
 					+ " Baloons!", (mWidth / 2), mHeight / 4, paint);
 		}
+
+		if (gameOver == true) {
+			paint.setTextSize(30);
+			if (gameWin == true) {
+				paint.setColor(Color.BLUE);
+				canvas.drawText("YOU WIN!", (mWidth / 2), mHeight / 4, paint);
+			} else {
+				paint.setColor(Color.MAGENTA);
+				canvas.drawText("YOU LOSE!", (mWidth / 2), mHeight / 4, paint);
+			}
+		}
+
+		// draw the game clock
+		paint.setColor(Color.BLACK);
+		paint.setTextSize(14);
+		canvas.drawText(String.format("%.2f", gameClockTimer.gameClock / 1000).toString()
+						+ " Seconds", (mWidth - (mWidth / 10)), mHeight / 30,
+				paint);
 
 	}
 
