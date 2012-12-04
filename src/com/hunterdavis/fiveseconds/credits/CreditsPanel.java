@@ -27,7 +27,6 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	private static final float TextTickSlowSpeed = 1.5f;
 
 	// member variables
-	private GameCanvasThread canvasthread;
 	public Boolean surfaceCreated;
 	public Context mContext;
 	private int mWidth = 0;
@@ -101,10 +100,6 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	float fdistance(float x1, float y1, float x2, float y2) {
-		return (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	}
-
 	public CreditsPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
@@ -114,20 +109,6 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 	}
 
-	public void createThread(SurfaceHolder holder) {
-		canvasthread = new GameCanvasThread(getHolder(), this, 35);
-		canvasthread.setRunning(true);
-		canvasthread.start();
-	}
-
-	public void terminateThread() {
-		canvasthread.setRunning(false);
-		try {
-			canvasthread.join();
-		} catch (InterruptedException e) {
-
-		}
-	}
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,

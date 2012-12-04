@@ -57,27 +57,6 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void readInCreditsTxt(int creditsReference) {
-		InputStream inputStream = getResources().openRawResource(
-				creditsReference);
-		BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(inputStream));
-		String eachLine = null;
-		try {
-			eachLine = bufferedReader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		while (eachLine != null) {
-			credits.add(new creditsLineItem(eachLine));
-			try {
-				eachLine = bufferedReader.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		synchronized (getHolder()) {
@@ -101,9 +80,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	float fdistance(float x1, float y1, float x2, float y2) {
-		return (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	}
+
 
 	public baloonPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -114,22 +91,6 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 	}
 
-	public void createThread(SurfaceHolder holder) {
-		canvasthread = new GameCanvasThread(getHolder(), this, 35);
-		canvasthread.setRunning(true);
-		canvasthread.start();
-	}
-
-	public void terminateThread() {
-		if (canvasthread != null) {
-			canvasthread.setRunning(false);
-			try {
-				canvasthread.join();
-			} catch (InterruptedException e) {
-
-			}
-		}
-	}
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
