@@ -11,34 +11,74 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 import com.hunterdavis.fiveseconds.gameutils.rendering.namedColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class baloonPanel.
+ */
 class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// member variables
+	/** The num baloons. */
 	public int numBaloons = 18;
+	
+	/** The num baloons to win. */
 	public int numBaloonsToWin = 3;
+	
+	/** The color to win. */
 	public int colorToWin = 0;
+	
+	/** The color to win name. */
 	public String colorToWinName = "";
 
+	/** The canvasthread. */
 	@SuppressWarnings("unused")
 	private GameCanvasThread canvasthread;
 
+	/** The surface created. */
 	public Boolean surfaceCreated;
+	
+	/** The m context. */
 	public Context mContext;
+	
+	/** The m width. */
 	private int mWidth = 0;
+	
+	/** The m height. */
 	private int mHeight = 0;
+	
+	/** The game over. */
 	private boolean gameOver = false;
+	
+	/** The first run. */
 	private boolean firstRun = true;
+	
+	/** The game started. */
 	private boolean gameStarted = false;
+	
+	/** The baloons. */
 	private Baloon baloons[];
+	
+	/** The colors. */
 	private namedColor colors[];
+	
+	/** The color hit count. */
 	private int colorHitCount[];
+	
+	/** The paint. */
 	private Paint paint = null;
+	
+	/** The audio manager. */
+	private EasyAudioManager audioManager;
 
+	/* (non-Javadoc)
+	 * @see android.view.View#onTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		synchronized (getHolder()) {
@@ -61,6 +101,12 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/**
+	 * Instantiates a new baloon panel.
+	 *
+	 * @param context the context
+	 * @param attrs the attrs
+	 */
 	public baloonPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
@@ -70,11 +116,17 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.view.SurfaceHolder.Callback#surfaceChanged(android.view.SurfaceHolder, int, int, int)
+	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 	}
 
+	/* (non-Javadoc)
+	 * @see android.view.SurfaceHolder.Callback#surfaceCreated(android.view.SurfaceHolder)
+	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		//
@@ -86,12 +138,18 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see android.view.SurfaceHolder.Callback#surfaceDestroyed(android.view.SurfaceHolder)
+	 */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		surfaceCreated = false;
 
 	}
 
+	/**
+	 * Inits the game state.
+	 */
 	public void initGameState() {
 		Random rand = new Random();
 
@@ -135,6 +193,9 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		firstRun = false;
 	}
 	
+	/**
+	 * Make one baloon in array color to win.
+	 */
 	public void makeOneBaloonInArrayColorToWin() {
 		for(int i =0;i<baloons.length;i++) {
 			if(baloons[i].color != colorToWin) {
@@ -145,6 +206,9 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	}
 
 	// we update the position of the baloons on screen in updateGameState
+	/* (non-Javadoc)
+	 * @see com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView#updateGameState()
+	 */
 	public void updateGameState() {
 
 		if (gameOver == true) {
@@ -162,6 +226,9 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/**
+	 * Update current baloon tick.
+	 */
 	public void updateCurrentBaloonTick() {
 		if (firstRun == true) {
 			return;
@@ -178,6 +245,11 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/**
+	 * Test baloons for pops.
+	 *
+	 * @param event the event
+	 */
 	public void testBaloonsForPops(MotionEvent event) {
 		float xVal = event.getX();
 		float yVal = event.getY();
@@ -189,6 +261,11 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/**
+	 * Update baloon pop count.
+	 *
+	 * @param color the color
+	 */
 	public void updateBaloonPopCount(int color) {
 		for (int i = 0; i < colors.length; i++) {
 			if (colors[i].color == color) {
@@ -207,11 +284,17 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/**
+	 * Do lose.
+	 */
 	public void doLose() {
 		// quit to mainmenu
 		((Activity) mContext).finish();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView#onDraw(android.graphics.Canvas)
+	 */
 	@Override
 	public void onDraw(Canvas canvas) {
 
@@ -241,6 +324,12 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	}
 
+	/**
+	 * Draw baloons.
+	 *
+	 * @param canvas the canvas
+	 * @param paint the paint
+	 */
 	public void drawBaloons(Canvas canvas, Paint paint) {
 		for (int i = 0; i < baloons.length; i++) {
 			baloons[i].drawBaloon(canvas, paint);
@@ -254,9 +343,24 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	/**
+	 * Sets the num baloons to win.
+	 *
+	 * @param numBaloonsToSet the new num baloons to win
+	 */
 	public void setNumBaloonsToWin(int numBaloonsToSet) {
 		numBaloonsToWin = numBaloonsToSet;
 		numBaloons = numBaloonsToWin * 10;
 		
+	}
+
+	// setAudioManager is a setter method for the audio manager
+	/**
+	 * Sets the audio manager.
+	 *
+	 * @param audioM the new audio manager
+	 */
+	public void setAudioManager(EasyAudioManager audioM) {
+		audioManager = audioM;
 	}
 } // end class

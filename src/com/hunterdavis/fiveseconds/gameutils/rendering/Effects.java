@@ -7,8 +7,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Effects.
+ */
 public class Effects {
 	
+	/**
+	 * Draw cracks.
+	 *
+	 * @param canvas the canvas
+	 * @param left the left
+	 * @param right the right
+	 * @param top the top
+	 * @param bottom the bottom
+	 * @param numCracks the num cracks
+	 * @param random the random
+	 */
 	public static void drawCracks(Canvas canvas, int left, int right, int top,
 			int bottom, int numCracks, Random random) {
 		Paint paint = new Paint();
@@ -28,6 +43,15 @@ public class Effects {
 		}
 	}
 
+	/**
+	 * Draw mr yuck effect.
+	 *
+	 * @param canvas the canvas
+	 * @param left the left
+	 * @param right the right
+	 * @param top the top
+	 * @param bottom the bottom
+	 */
 	public void drawMrYuckEffect(Canvas canvas, int left, int right, int top,
 			int bottom) {
 		int x = (left + right) / 2;

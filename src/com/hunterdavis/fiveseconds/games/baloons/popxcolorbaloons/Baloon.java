@@ -11,20 +11,54 @@ import android.graphics.Paint.Style;
 import com.hunterdavis.fiveseconds.gameutils.rendering.Effects;
 import com.hunterdavis.fiveseconds.gameutils.rendering.renderMath;
 
+// TODO: Auto-generated Javadoc
 // each credits line is a tiny inner class for storing credits lines
+/**
+ * The Class Baloon.
+ */
 class Baloon {
+	
+	/** The x location. */
 	int xLocation;
+	
+	/** The y location. */
 	int yLocation;
+	
+	/** The size. */
 	int size;
+	
+	/** The age. */
 	int age;
+	
+	/** The color. */
 	int color;
+	
+	/** The drawable rect. */
 	RectF drawableRect;
+	
+	/** The tail length. */
 	int tailLength;
+	
+	/** The left tail. */
 	Boolean leftTail;
+	
+	/** The popping frames remaining. */
 	int poppingFramesRemaining;
+	
+	/** The popped. */
 	Boolean popped;
+	
+	/** The random. */
 	Random random;
 
+	/**
+	 * Instantiates a new baloon.
+	 *
+	 * @param xLoc the x loc
+	 * @param yLoc the y loc
+	 * @param initColor the init color
+	 * @param initSize the init size
+	 */
 	Baloon(int xLoc, int yLoc, int initColor, int initSize) {
 		xLocation = xLoc;
 		yLocation = yLoc;
@@ -40,11 +74,21 @@ class Baloon {
 		random = new Random();
 	}
 
+	/**
+	 * Pop.
+	 */
 	public void pop() {
 		popped = true;
 	}
 
 	// if the given point is within the baloon's bounding box
+	/**
+	 * Checks if is point within baloon.
+	 *
+	 * @param xLoc the x loc
+	 * @param yLoc the y loc
+	 * @return the boolean
+	 */
 	public Boolean isPointWithinBaloon(float xLoc, float yLoc) {
 
 		float overallDistance = renderMath.fdistance(xLoc, yLoc, xLocation,
@@ -56,6 +100,12 @@ class Baloon {
 		}
 	}
 
+	/**
+	 * Update xand y loc.
+	 *
+	 * @param xLoc the x loc
+	 * @param yLoc the y loc
+	 */
 	public void updateXandYLoc(int xLoc, int yLoc) {
 		xLocation = xLoc;
 		yLocation = yLoc;
@@ -63,12 +113,22 @@ class Baloon {
 				- size);
 	}
 
+	/**
+	 * Update size.
+	 *
+	 * @param initSize the init size
+	 */
 	public void updateSize(int initSize) {
 		size = initSize;
 		drawableRect = new RectF(xLocation - size, yLocation + size, xLocation
 				+ size, yLocation - size);
 	}
 
+	/**
+	 * Should this baloon die.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean shouldThisBaloonDie() {
 		if (popped == true) {
 			poppingFramesRemaining -= 1;
@@ -80,6 +140,12 @@ class Baloon {
 		return false;
 	}
 
+	/**
+	 * Draw baloon.
+	 *
+	 * @param canvas the canvas
+	 * @param paint the paint
+	 */
 	public void drawBaloon(Canvas canvas, Paint paint) {
 
 		paint.setColor(Color.BLACK);
@@ -113,6 +179,12 @@ class Baloon {
 
 	}
 
+	/**
+	 * Draw baloon cracks.
+	 *
+	 * @param canvas the canvas
+	 * @param numCracks the num cracks
+	 */
 	private void drawBaloonCracks(Canvas canvas, int numCracks) {
 		Effects.drawCracks(canvas, xLocation - size, xLocation + size,
 				yLocation + size, yLocation - size, numCracks, random);

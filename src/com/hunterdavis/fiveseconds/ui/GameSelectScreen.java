@@ -15,10 +15,17 @@ import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons.PopXColorBaloons;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
+// TODO: Auto-generated Javadoc
 // The game select screen is the main 'hub' of 5 seconds
 
+/**
+ * The Class GameSelectScreen.
+ */
 public class GameSelectScreen extends Activity {
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +59,9 @@ public class GameSelectScreen extends Activity {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_game_select_screen, menu);

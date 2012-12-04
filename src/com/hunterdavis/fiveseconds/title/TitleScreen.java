@@ -18,23 +18,59 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TitleScreen.
+ */
 public class TitleScreen extends Activity implements
 		MediaPlayer.OnCompletionListener {
+	
+	/** The media player. */
 	MediaPlayer mediaPlayer;
 
+	/** The Constant wavReferenceIDString. */
 	public static final String wavReferenceIDString = "wavreference";
+	
+	/** The Constant imageReferenceIDString. */
 	public static final String imageReferenceIDString = "imgreference";
+	
+	/** The Constant touchToExitBooleanID. */
 	public static final String touchToExitBooleanID = "touchToExit";
+	
+	/** The Constant exitOnWavePlayBooleanID. */
 	public static final String exitOnWavePlayBooleanID = "exitOnWavPlay";
+	
+	/** The Constant timeoutIntegerID. */
 	public static final String timeoutIntegerID = "timeout";
 
+	/** The img reference. */
 	private int imgReference = -1;
+	
+	/** The wav reference. */
 	private int wavReference = -1;
+	
+	/** The touch to exit. */
 	private boolean touchToExit = true;
+	
+	/** The exit on wav play. */
 	private boolean exitOnWavPlay = false;
+	
+	/** The timeout. */
 	private int timeout = -1;
+	
+	/** The audio manager. */
 	private EasyAudioManager audioManager;
 
+	/**
+	 * Start title screen.
+	 *
+	 * @param context the context
+	 * @param wavRefId the wav ref id
+	 * @param imageRefId the image ref id
+	 * @param touchToExit the touch to exit
+	 * @param exitOnWavComplete the exit on wav complete
+	 * @param timeout the timeout
+	 */
 	public static final void startTitleScreen(Context context, int wavRefId,
 			int imageRefId, boolean touchToExit, boolean exitOnWavComplete,
 			int timeout) {
@@ -62,6 +98,9 @@ public class TitleScreen extends Activity implements
 		context.startActivity(titleIntent);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +156,9 @@ public class TitleScreen extends Activity implements
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.media.MediaPlayer.OnCompletionListener#onCompletion(android.media.MediaPlayer)
+	 */
 	public void onCompletion(MediaPlayer arg0) {
 		if (exitOnWavPlay) {
 			finish();
@@ -124,22 +166,41 @@ public class TitleScreen extends Activity implements
 	}
 
 	// countdowntimer is an abstract class, so extend it and fill in methods
+	/**
+	 * The Class TitleCountDown.
+	 */
 	public class TitleCountDown extends CountDownTimer {
+		
+		/**
+		 * Instantiates a new title count down.
+		 *
+		 * @param millisInFuture the millis in future
+		 * @param countDownInterval the count down interval
+		 */
 		public TitleCountDown(long millisInFuture, long countDownInterval) {
 			super(millisInFuture, countDownInterval);
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.CountDownTimer#onFinish()
+		 */
 		@Override
 		public void onFinish() {
 			finish();
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.CountDownTimer#onTick(long)
+		 */
 		@Override
 		public void onTick(long millisUntilFinished) {
 
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

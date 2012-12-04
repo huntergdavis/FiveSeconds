@@ -14,17 +14,44 @@ import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.credits.CreditsPanel.creditsLineItem;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CreditsScreen.
+ */
 public class CreditsScreen extends Activity {
+	
+	/** The audio manager. */
 	EasyAudioManager audioManager; 
+	
+	/** The credits panel. */
 	CreditsPanel creditsPanel;
 
+	/** The Constant wavReferenceIDString. */
 	public static final String wavReferenceIDString = "wavreference";
+	
+	/** The Constant txtReferenceIDString. */
 	public static final String txtReferenceIDString = "txtreference";
+	
+	/** The Constant finalScoreString. */
 	public static final String finalScoreString = "finalScoreInfo";
+	
+	/** The txt reference. */
 	private int txtReference = -1;
+	
+	/** The wav reference. */
 	private int wavReference = -1;
+	
+	/** The final score info text. */
 	private String finalScoreInfoText = "";
 	
+	/**
+	 * Start credit screen.
+	 *
+	 * @param context the context
+	 * @param wavRefId the wav ref id
+	 * @param txtRefId the txt ref id
+	 * @param finalScoreText the final score text
+	 */
 	public static final void startCreditScreen(Context context, int wavRefId,
 			int txtRefId, String finalScoreText) {
 		// create the new title screen intent
@@ -48,6 +75,9 @@ public class CreditsScreen extends Activity {
 		context.startActivity(creditsIntent);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,6 +117,10 @@ public class CreditsScreen extends Activity {
 		} 
 
 	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -94,6 +128,10 @@ public class CreditsScreen extends Activity {
 		audioManager.pauseSong();
 		System.gc();
 	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -101,6 +139,10 @@ public class CreditsScreen extends Activity {
 			creditsPanel.createThread(creditsPanel.getHolder());
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

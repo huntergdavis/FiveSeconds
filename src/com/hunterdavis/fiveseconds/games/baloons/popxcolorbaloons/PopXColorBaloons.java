@@ -13,13 +13,33 @@ import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PopXColorBaloons.
+ */
 public class PopXColorBaloons extends Activity {
+	
+	/** The Constant numberToMatch. */
 	public static final String numberToMatch = "numberToMatch";
+	
+	/** The audio manager. */
 	EasyAudioManager audioManager;
+	
+	/** The pop many baloon panel. */
 	baloonPanel popManyBaloonPanel;
+	
+	/** The times resumed. */
 	private int timesResumed = 0;
+	
+	/** The num baloons to match. */
 	private int numBaloonsToMatch = 3;
 
+	/**
+	 * Start pop x color baloons screen.
+	 *
+	 * @param context the context
+	 * @param numberBaloonsToMatch the number baloons to match
+	 */
 	public static final void startPopXColorBaloonsScreen(Context context, int numberBaloonsToMatch) {
 		// create the new title screen intent
 		Intent baloonsIntent = new Intent(context, PopXColorBaloons.class);
@@ -30,6 +50,9 @@ public class PopXColorBaloons extends Activity {
 		context.startActivity(baloonsIntent);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +79,9 @@ public class PopXColorBaloons extends Activity {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -68,6 +94,9 @@ public class PopXColorBaloons extends Activity {
 		System.gc();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -91,6 +120,8 @@ public class PopXColorBaloons extends Activity {
 
 					});
 			audioManager.playSong();
+			
+			popManyBaloonPanel.setAudioManager(audioManager);
 			if (popManyBaloonPanel.surfaceCreated == true) {
 				popManyBaloonPanel.createThread(popManyBaloonPanel.getHolder());
 			}
@@ -98,6 +129,9 @@ public class PopXColorBaloons extends Activity {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
