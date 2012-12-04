@@ -9,5 +9,4 @@ www.hunterdavis.com
 
 
 Recent Updates:
-Parameterized Title Screen Activity
-Parameterized Scrolling Credits Activity
+Scrolling Baloons

@@ -1,7 +1,6 @@
 package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -10,14 +9,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
+import com.hunterdavis.fiveseconds.gameutils.rendering.namedColor;
 
 class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// member variables
@@ -33,18 +31,9 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	private boolean gameOver = false;
 	private boolean firstRun = true;
 	List<Baloon> baloons = new ArrayList<Baloon>();
+	Baloon baloon = null;
 	List<namedColor> colors = new ArrayList<namedColor>();
 	Paint paint = null;
-
-	private class namedColor {
-		int color;
-		String colorName;
-
-		namedColor(int initColor, String name) {
-			color = initColor;
-			colorName = name;
-		}
-	};
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -129,12 +118,22 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			initGameState();
 		}
 
-		// update current line a tick
-		updateCurrentLineTick();
+		// update current baloons a tick
+		updateCurrentBaloonTick();
 	}
 
-	public void updateCurrentLineTick() {
+	public void updateCurrentBaloonTick() {
+		for (int i = 0; i < baloons.size(); i++) {
+			baloon = baloons.get(i);
 
+			baloon.age++;
+			baloon.updateXandYLoc(baloon.xLocation, (baloon.yLocation - 1));
+
+			if (baloon.yLocation - baloon.size - 2 < 0) {
+				baloon.updateXandYLoc(baloon.xLocation, mHeight);
+			}
+			baloons.set(i, baloon);
+		}
 	}
 
 	public void doLose() {
@@ -167,34 +166,9 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void drawBaloon(Baloon baloon, Canvas canvas, Paint paint) {
-
-		paint.setColor(Color.BLACK);
-
-		// first draw a 'string'
-		canvas.drawLine(baloon.xLocation, baloon.yLocation + baloon.size,
-				baloon.xLocation, baloon.yLocation + baloon.tailLength, paint);
-
-		// draw a little tail on the string
-		if (baloon.leftTail) {
-			canvas.drawLine(baloon.xLocation, baloon.yLocation
-					+ baloon.tailLength, baloon.xLocation
-					- (baloon.tailLength / 8), baloon.yLocation
-					+ baloon.tailLength + (baloon.tailLength / 8), paint);
-		} else {
-			canvas.drawLine(baloon.xLocation, baloon.yLocation
-					+ baloon.tailLength, baloon.xLocation
-					+ (baloon.tailLength / 8), baloon.yLocation
-					+ baloon.tailLength + (baloon.tailLength / 8), paint);
-		}
-		paint.setColor(baloon.color);
-		paint.setStyle(Style.FILL);
-		canvas.drawOval(baloon.drawableRect, paint);
-	}
-
 	public void drawBaloons(Canvas canvas, Paint paint) {
 		for (int i = 0; i < baloons.size(); i++) {
-			drawBaloon(baloons.get(i), canvas, paint);
+			baloons.get(i).drawBaloon(canvas, paint);
 		}
 	}
 
