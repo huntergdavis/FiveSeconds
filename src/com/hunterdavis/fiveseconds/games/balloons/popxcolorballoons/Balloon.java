@@ -1,4 +1,4 @@
-package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
+package com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ import com.hunterdavis.fiveseconds.gameutils.rendering.renderMath;
 /**
  * The Class Baloon.
  */
-class Baloon {
+class Balloon {
 	
 	/** The x location. */
 	int xLocation;
@@ -59,7 +59,7 @@ class Baloon {
 	 * @param initColor the init color
 	 * @param initSize the init size
 	 */
-	Baloon(int xLoc, int yLoc, int initColor, int initSize) {
+	Balloon(int xLoc, int yLoc, int initColor, int initSize) {
 		xLocation = xLoc;
 		yLocation = yLoc;
 		age = 0;

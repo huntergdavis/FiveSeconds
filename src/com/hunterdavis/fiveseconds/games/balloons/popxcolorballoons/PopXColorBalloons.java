@@ -1,4 +1,4 @@
-package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
+package com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,7 @@ import com.hunterdavis.fiveseconds.title.TitleScreen;
 /**
  * The Class PopXColorBaloons.
  */
-public class PopXColorBaloons extends Activity {
+public class PopXColorBalloons extends Activity {
 
 	/** The Constant numberToMatch. */
 	public static final String numberToMatch = "numberToMatch";
@@ -26,7 +26,7 @@ public class PopXColorBaloons extends Activity {
 	EasyAudioManager audioManager;
 
 	/** The pop many baloon panel. */
-	baloonPanel popManyBaloonPanel;
+	balloonPanel popManyBaloonPanel;
 
 	/** The times resumed. */
 	private int timesResumed = 0;
@@ -45,7 +45,7 @@ public class PopXColorBaloons extends Activity {
 	public static final void startPopXColorBaloonsScreen(Context context,
 			int numberBaloonsToMatch) {
 		// create the new title screen intent
-		Intent baloonsIntent = new Intent(context, PopXColorBaloons.class);
+		Intent baloonsIntent = new Intent(context, PopXColorBalloons.class);
 		baloonsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		baloonsIntent.putExtra(numberToMatch, numberBaloonsToMatch);
 
@@ -77,9 +77,9 @@ public class PopXColorBaloons extends Activity {
 		// create a title screen and throw it up
 		TitleScreen
 				.startTitleScreen(getApplicationContext(),
-						R.raw.popxcolorbaloonstitletheme,
+						R.raw.popxcolorballoonstitletheme,
 						R.drawable.popxcolorbaloonstitle, true/* touchToExit */,
-						true /* exitOnWavComplete */, -1/* timeout */);
+						false /* exitOnWavComplete */, 3000/* timeout */);
 
 	}
 
@@ -112,14 +112,14 @@ public class PopXColorBaloons extends Activity {
 		if (timesResumed > 1) {
 			setContentView(R.layout.popxcolorbaloons);
 			// at this point the layout should be inflated, so
-			popManyBaloonPanel = (baloonPanel) findViewById(R.id.SurfaceView01);
+			popManyBaloonPanel = (balloonPanel) findViewById(R.id.SurfaceView01);
 			popManyBaloonPanel.setNumBaloonsToWin(numBaloonsToMatch);
 
 			// create the audioManager
 			int[] soundBites = new int[1];
-			soundBites[0] = R.raw.baloonpop;
+			soundBites[0] = R.raw.balloonpop;
 			audioManager = new EasyAudioManager(this, soundBites);
-			audioManager.setSongAndOnComplete(this, R.raw.popxcolorbaloonsgametheme,
+			audioManager.setSongAndOnComplete(this, R.raw.popxcolorballoonsgametheme,
 					new OnCompletionListener() {
 
 						@Override

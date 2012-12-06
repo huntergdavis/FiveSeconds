@@ -8,10 +8,10 @@
     android:orientation="vertical" >
 
 
-	<com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons.baloonPanel
+	<com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.balloonPanel
 		android:id="@+id/SurfaceView01" android:layout_width="fill_parent"
 
 		android:layout_height="fill_parent">
-	</com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons.baloonPanel>
+	</com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.balloonPanel>
 
 </LinearLayout>

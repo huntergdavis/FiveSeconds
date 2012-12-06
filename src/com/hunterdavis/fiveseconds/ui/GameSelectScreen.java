@@ -3,7 +3,6 @@ package com.hunterdavis.fiveseconds.ui;
 import java.util.Random;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.Button;
 
 import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.credits.CreditsScreen;
-import com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons.PopXColorBaloons;
+import com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.PopXColorBalloons;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
 // TODO: Auto-generated Javadoc
@@ -23,7 +22,9 @@ import com.hunterdavis.fiveseconds.title.TitleScreen;
  */
 public class GameSelectScreen extends Activity {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -35,7 +36,8 @@ public class GameSelectScreen extends Activity {
 		testCreditsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				CreditsScreen.startCreditScreen(getApplicationContext(),
-						R.raw.compressedtitletheme, R.raw.fivesecondscredits, "Final Score: 50pts");
+						R.raw.compressedtitletheme, R.raw.fivesecondscredits,
+						-1 /* no final image */, "Final Score: 50pts");
 			}
 		});
 
@@ -52,14 +54,16 @@ public class GameSelectScreen extends Activity {
 		Button testPopXColorBaloonsButton = (Button) findViewById(R.id.testopopxcolorbaloonsbutton1);
 		testPopXColorBaloonsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				PopXColorBaloons.startPopXColorBaloonsScreen(
-						getApplicationContext(),3 + (new Random().nextInt(2)));
+				PopXColorBalloons.startPopXColorBaloonsScreen(
+						getApplicationContext(), 3 + (new Random().nextInt(2)));
 			}
 		});
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override

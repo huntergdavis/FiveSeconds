@@ -1,11 +1,5 @@
 package com.hunterdavis.fiveseconds.title;
 
-import com.hunterdavis.easyaudiomanager.EasyAudioManager;
-import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.R.id;
-import com.hunterdavis.fiveseconds.R.layout;
-import com.hunterdavis.fiveseconds.R.raw;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +11,9 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.hunterdavis.easyaudiomanager.EasyAudioManager;
+import com.hunterdavis.fiveseconds.R;
 
 // TODO: Auto-generated Javadoc
 /**

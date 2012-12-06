@@ -9,15 +9,16 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
 import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 
 // TODO: Auto-generated Javadoc
@@ -27,13 +28,13 @@ import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
 class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// values
 	/** The Text tick value. */
-	private static float TextTickValue = (float) 1.5;
+	private static float TextTickValue = (float) 6.0f;
 
 	/** The Constant TextTickFastForwardSpeed. */
-	private static final float TextTickFastForwardSpeed = 18.0f;
+	private static final float TextTickFastForwardSpeed = 32.0f;
 
 	/** The Constant TextTickSlowSpeed. */
-	private static final float TextTickSlowSpeed = 3.0f;
+	private static final float TextTickSlowSpeed = 6.0f;
 
 	// member variables
 	/** The surface created. */
@@ -65,6 +66,11 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 	/** The final score. */
 	private String finalScore = "";
+
+	/* CG Functions reference */
+	private int creditsEndingImage = -1;
+
+	private Bitmap finalImageBitmap = null;
 
 	// each credits line is a tiny inner class for storing credits lines
 	/**
@@ -180,6 +186,12 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 		getHolder().addCallback(this);
 		setFocusable(true);
+	}
+
+	public void setCreditsEndingImage(int creditsImageRef) {
+		creditsEndingImage = creditsImageRef;
+		Resources res = getResources();
+		finalImageBitmap = BitmapFactory.decodeResource(res, creditsImageRef);
 	}
 
 	/*
@@ -301,6 +313,11 @@ class CreditsPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 		// draw game over if game over
 		if (gameOver == true) {
+			if (finalImageBitmap != null) {
+				canvas.drawBitmap(finalImageBitmap, (mWidth / 2)
+						- finalImageBitmap.getWidth() / 2, (mHeight / 2)
+						- finalImageBitmap.getHeight() / 2, paint);
+			}
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(30);
 			canvas.drawText("Game Over", (mWidth / 2), mHeight / 4, paint);

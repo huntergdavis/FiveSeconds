@@ -29,7 +29,7 @@
             android:label="@string/title_activity_credits_screen" >
         </activity>
         <activity
-            android:name=".games.baloons.popxcolorbaloons.PopXColorBaloons"
+            android:name=".games.balloons.popxcolorballoons.PopXColorBalloons"
             android:label="@string/popxcolorbaloons_activity_credits_screen" >
         </activity>
     </application>

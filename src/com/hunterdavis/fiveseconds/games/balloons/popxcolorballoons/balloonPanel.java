@@ -1,4 +1,4 @@
-package com.hunterdavis.fiveseconds.games.baloons.popxcolorbaloons;
+package com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons;
 
 import java.util.Random;
 
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,16 +24,19 @@ import com.hunterdavis.fiveseconds.gameutils.time.GameClockCountDownTimer;
 /**
  * The Class baloonPanel.
  */
-class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
+class balloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	// member variables
 	/** The num baloons. */
-	public int numBaloons = 18;
+	public int numBalloons = 18;
 
 	/** The num baloons to win. */
-	public int numBaloonsToWin = 3;
+	public int numBalloonsToWin = 3;
 
 	/** The color to win. */
 	public int colorToWin = 0;
+
+	/** The positional reference value of colorToWin **/
+	private int colorToWinReferenceOffset = 0;
 
 	/** The color to win name. */
 	public String colorToWinName = "";
@@ -64,13 +68,21 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	private boolean gameStarted = false;
 
 	/** The baloons. */
-	private Baloon baloons[];
+	private Balloon baloons[];
 
 	/** The colors. */
 	private namedColor colors[];
 
 	/** The color hit count. */
 	private int colorHitCount[];
+
+	// variables related to the placement of 'lives' status balloons
+	private int drawableStatusBaloonSize = 0;
+	private int drawableStatusBaloonYOffset = 0;
+	private int statusBackgroundLeft = 0;
+	private int statusBackgroundTop = 0;
+	private int statusBackgroundRight = 0;
+	private int statusBackgroundBottom = 0;
 
 	/** The paint. */
 	private Paint paint = null;
@@ -99,10 +111,10 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 					testBaloonsForPops(event);
 				} else if (gameOver) {
 					CreditsScreen.startCreditScreen(getContext(),
-							R.raw.popxcolorbaloonscreditstheme,
-							R.raw.popxcolorbaloonscredits, "You popped "
-									+ numBaloonsToWin + " " + colorToWinName
-									+ " baloons");
+							R.raw.popxcolorballoonscreditstheme,
+							R.raw.popxcolorballoonscredits, R.drawable.hunterredbaloon, "You popped "
+									+ numBalloonsToWin + " " + colorToWinName
+									+ " balloons");
 					doLose();
 				}
 				return true;
@@ -124,11 +136,11 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	 * @param attrs
 	 *            the attrs
 	 */
-	public baloonPanel(Context context, AttributeSet attrs) {
+	public balloonPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
 		surfaceCreated = false;
-		gameClockTimer = new GameClockCountDownTimer(5000, 10,5000);
+		gameClockTimer = new GameClockCountDownTimer(5000, 10, 5000);
 
 		getHolder().addCallback(this);
 		setFocusable(true);
@@ -201,13 +213,14 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		colors[9] = new namedColor(Color.CYAN, "Cyan");
 
 		int colorRand = rand.nextInt(colors.length);
+		colorToWinReferenceOffset = colorRand;
 		colorToWin = colors[colorRand].color;
 		colorToWinName = colors[colorRand].colorName;
 
-		baloons = new Baloon[numBaloons];
+		baloons = new Balloon[numBalloons];
 		int numBaloonsCanWin = 0;
-		for (int i = 0; i < numBaloons; i++) {
-			baloons[i] = new Baloon(rand.nextInt(15 + (mWidth - 15)),
+		for (int i = 0; i < numBalloons; i++) {
+			baloons[i] = new Balloon(rand.nextInt(15 + (mWidth - 15)),
 					rand.nextInt(15 + (mHeight - 15)),
 					colors[rand.nextInt(colors.length)].color,
 					6 + rand.nextInt(20));
@@ -215,7 +228,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 				numBaloonsCanWin++;
 			}
 		}
-		for (int i = numBaloonsCanWin; i < numBaloonsToWin; i++) {
+		for (int i = numBaloonsCanWin; i < numBalloonsToWin; i++) {
 			makeOneBaloonInArrayColorToWin();
 		}
 
@@ -320,7 +333,7 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		for (int i = 0; i < colors.length; i++) {
 			if (colors[i].color == color) {
 				colorHitCount[i]++;
-				if ((colorHitCount[i] >= numBaloonsToWin)
+				if ((colorHitCount[i] >= numBalloonsToWin)
 						&& (colors[i].color == colorToWin)) {
 					gameWin = true;
 					gameOver = true;
@@ -351,6 +364,17 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 
 		mWidth = canvas.getWidth();
 		mHeight = canvas.getHeight();
+		if (drawableStatusBaloonSize == 0) {
+			drawableStatusBaloonSize = mHeight / 100;
+			drawableStatusBaloonYOffset = mHeight / 20;
+			statusBackgroundLeft = Math.min(mWidth
+					- (int) ((mWidth / 20) * (numBalloonsToWin + 0.5)), mWidth
+					- (int) ((mWidth / 20) * 4));
+			statusBackgroundTop = drawableStatusBaloonYOffset
+					+ drawableStatusBaloonSize * 4;
+			statusBackgroundRight = mWidth - 2;
+			statusBackgroundBottom = 2;
+		}
 
 		if (paint == null) {
 			paint = new Paint();
@@ -369,12 +393,12 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 		if (gameStarted == false) {
 			paint.setColor(Color.MAGENTA);
 			paint.setTextSize(30);
-			canvas.drawText("Pop " + numBaloonsToWin + " " + colorToWinName
-					+ " Baloons!", (mWidth / 2), mHeight / 4, paint);
+			canvas.drawText("Pop " + numBalloonsToWin + " " + colorToWinName
+					+ " Balloons!", (mWidth / 2), mHeight / 4, paint);
 		}
 
 		if (gameOver == true) {
-			paint.setTextSize(30);
+			paint.setTextSize(60);
 			if (gameWin == true) {
 				paint.setColor(Color.BLUE);
 				canvas.drawText("YOU WIN!", (mWidth / 2), mHeight / 4, paint);
@@ -384,12 +408,15 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 
+		// draw how many lives you have left
+		drawStatusBaloons(canvas, paint);
+
 		// draw the game clock
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(14);
-		canvas.drawText(String.format("%.2f", gameClockTimer.gameClock / 1000).toString()
-						+ " Seconds", (mWidth - (mWidth / 10)), mHeight / 30,
-				paint);
+		canvas.drawText(String.format("%.2f", gameClockTimer.gameClock / 1000)
+				.toString() + " Seconds", (mWidth - (mWidth / 10)),
+				mHeight / 30, paint);
 
 	}
 
@@ -406,10 +433,63 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 			baloons[i].drawBaloon(canvas, paint);
 			if (baloons[i].shouldThisBaloonDie()) {
 				Random rand = new Random();
-				baloons[i] = new Baloon(rand.nextInt(15 + (mWidth - 15)),
+				baloons[i] = new Balloon(rand.nextInt(15 + (mWidth - 15)),
 						rand.nextInt(15 + (mHeight - 15)),
 						colors[rand.nextInt(colors.length)].color,
 						6 + rand.nextInt(20));
+			}
+		}
+	}
+
+	/**
+	 * Draw statusbaloons.
+	 * 
+	 * @param canvas
+	 *            the canvas
+	 * @param paint
+	 *            the paint
+	 */
+	public void drawStatusBaloons(Canvas canvas, Paint paint) {
+
+		if (firstRun) {
+			return;
+		}
+
+		// first draw the background
+		paint.setColor(Color.LTGRAY);
+		paint.setStyle(Style.FILL);
+		canvas.drawRect(numBalloonsToWin * 10, mHeight / 10, mWidth, 0, paint);
+
+		// draw a gray box
+		canvas.drawRect(statusBackgroundLeft, statusBackgroundTop,
+				statusBackgroundRight, statusBackgroundBottom, paint);
+		// and a black border
+		paint.setColor(Color.BLACK);
+		paint.setStyle(Style.STROKE);
+		canvas.drawRect(statusBackgroundLeft, statusBackgroundTop,
+				statusBackgroundRight, statusBackgroundBottom, paint);
+
+		// draw each balloon
+		for (int i = 0; i < numBalloonsToWin; i++) {
+			int baloonXVal = mWidth - (int) ((mWidth / 20) * (i + 0.5));
+			(new Balloon(baloonXVal, drawableStatusBaloonYOffset, colorToWin,
+					drawableStatusBaloonSize)).drawBaloon(canvas, paint);
+
+			paint.setColor(Color.RED);
+			paint.setStrokeWidth(3);
+			if (colorHitCount[colorToWinReferenceOffset] > i) {
+
+				canvas.drawLine(baloonXVal - drawableStatusBaloonSize,
+						drawableStatusBaloonYOffset - drawableStatusBaloonSize,
+						baloonXVal + drawableStatusBaloonSize,
+						drawableStatusBaloonYOffset + drawableStatusBaloonSize,
+						paint);
+
+				canvas.drawLine(baloonXVal + drawableStatusBaloonSize,
+						drawableStatusBaloonYOffset - drawableStatusBaloonSize,
+						baloonXVal - drawableStatusBaloonSize,
+						drawableStatusBaloonYOffset + drawableStatusBaloonSize,
+						paint);
 			}
 		}
 	}
@@ -421,8 +501,8 @@ class baloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	 *            the new num baloons to win
 	 */
 	public void setNumBaloonsToWin(int numBaloonsToSet) {
-		numBaloonsToWin = numBaloonsToSet;
-		numBaloons = numBaloonsToWin * 10;
+		numBalloonsToWin = numBaloonsToSet;
+		numBalloons = numBalloonsToWin * 10;
 
 	}
 
