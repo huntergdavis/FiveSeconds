@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.crittercism.app.Crittercism;
 import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.PopXColorBalloons;
@@ -30,6 +31,10 @@ public class GameSelectScreen extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// crittercism
+		Crittercism.init(getApplicationContext(), "50c2a35f866b8466c9000005");
+
 		setContentView(R.layout.activity_game_select_screen);
 
 		Button testCreditsButton = (Button) findViewById(R.id.testcreditsbutton1);
