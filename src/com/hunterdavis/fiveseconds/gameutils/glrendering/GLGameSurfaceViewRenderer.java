@@ -1,22 +1,18 @@
-package com.hunterdavis.fiveseconds.gameutils.rendering;
+package com.hunterdavis.fiveseconds.gameutils.glrendering;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.gameutils.rendering.UIThreadMessages;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.os.Handler;
 import android.os.Message;
-import android.text.InputFilter.LengthFilter;
-import android.util.AttributeSet;
-import android.view.SurfaceHolder;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -119,6 +115,14 @@ public abstract class GLGameSurfaceViewRenderer implements
 		msg.what = UIThreadMessages.SCREENRESIZED.value();
 		handler.sendMessage(msg);
 		
+	}
+	
+	public int getWidth() {
+		return mSurfaceWidth;
+	}
+	
+	public int getHeight() {
+		return mSurfaceHeight;
 	}
 	
 	private void createGlobalTextureObject(GL10 gl, Context context, int textureToLoadIndex) {

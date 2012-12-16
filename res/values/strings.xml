@@ -6,5 +6,6 @@
     <string name="title_activity_game_select_screen">5 Seconds</string>
     <string name="title_activity_credits_screen">5 Seconds - Goodbye</string>
     <string name="popxcolorbaloons_activity_credits_screen">Pop Them Balloons</string>
+    <string name="dotdotdotjump_activity_credits_screen">…Jump!</string>
 
 </resources>

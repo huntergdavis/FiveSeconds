@@ -32,6 +32,10 @@
             android:name=".games.balloons.popxcolorballoons.PopXColorBalloons"
             android:label="@string/popxcolorbaloons_activity_credits_screen" >
         </activity>
+        <activity
+            android:name=".games.dotdotdotjump.DotDotDotJump"
+            android:label="@string/dotdotdotjump_activity_credits_screen" >
+        </activity>        
         <!-- Start of Crittercism.com Code -->
         	<activity android:name="com.crittercism.NotificationActivity" />
         <!-- End of Crittercism.com Code -->
