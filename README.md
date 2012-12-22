@@ -9,5 +9,6 @@ www.hunterdavis.com
 
 
 Recent Updates:
-PopXColorBalloons essentially done (surfaceview/canvas baloon pop game)
-Starting work on game #2, openGL running game '...Jump!'
+Added base GL game rendering classes
+Starting work on skeletal animation article, gl running game "...Jump!"
+
