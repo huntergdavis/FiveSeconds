@@ -32,7 +32,7 @@ public abstract class GLGameSurfaceViewRenderer implements
 	private long lastFrameDraw = 0;
 	private int frameSamplesCollected = 0;
 	private int frameSampleTime = 0;
-	private int fps = 0;
+	private double fps = 0;
 	private boolean drawFPS = false;
 	/** The texture pointer */
 
@@ -55,7 +55,7 @@ public abstract class GLGameSurfaceViewRenderer implements
 	 * @param attrs
 	 *            the attrs
 	 */
-	public GLGameSurfaceViewRenderer(Context contexta, Handler handlera, int[] texturesToLoad, SharedGameData shareData) {
+	public GLGameSurfaceViewRenderer(Context contexta, Handler handlera, int[] texturesToLoad, SharedGameData shareData, boolean drawFPS) {
 		this.context = contexta;
 		this.handler = handlera;
 		textures = new int[texturesToLoad.length];
@@ -78,14 +78,11 @@ public abstract class GLGameSurfaceViewRenderer implements
 			frameSampleTime += time;
 			frameSamplesCollected++;
 			if (frameSamplesCollected == 60) {
-				fps = (int) (10000 / frameSampleTime);
+				fps = (10000 / frameSampleTime);
 				frameSampleTime = 0;
 				frameSamplesCollected = 0;
 				if (drawFPS) {
-					Message msg = handler.obtainMessage();
-					msg.what = UIThreadMessages.UPDATEFPS.value();
-					msg.arg1 = fps;
-					handler.sendMessage(msg);
+					sharedGameData.updateFps(fps);
 				}
 			}
 		}

@@ -33,11 +33,7 @@ public class DotDotDotJump extends Activity {
 	final Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			if (msg.what == UIThreadMessages.UPDATEFPS.value()) {
-				//TextView fpsView = (TextView) findViewById(R.id.fps);
-				double fps = msg.arg1;
-				//fpsView.setText("FPS: " + fps);
-			} else if (msg.what == UIThreadMessages.SCREENRESIZED.value()) {
+			if (msg.what == UIThreadMessages.SCREENRESIZED.value()) {
 				
 			} 
 			super.handleMessage(msg);

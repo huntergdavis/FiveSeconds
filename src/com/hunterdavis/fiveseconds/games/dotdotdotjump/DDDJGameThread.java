@@ -10,8 +10,7 @@ public class DDDJGameThread extends GameThread {
 
 	@Override
 	protected void updateGameState() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }

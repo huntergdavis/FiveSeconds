@@ -8,8 +8,8 @@ import com.hunterdavis.fiveseconds.gameutils.glrendering.GLGameSurfaceViewRender
 public class DDDJGLRenderer extends GLGameSurfaceViewRenderer {
 
 	public DDDJGLRenderer(Context contexta, Handler handlera,
-			int[] texturesToLoad, DDDJSharedGameData shareData) {
-		super(contexta, handlera, texturesToLoad, shareData);
+			int[] texturesToLoad, DDDJSharedGameData shareData, Boolean drawFPS) {
+		super(contexta, handlera, texturesToLoad, shareData, drawFPS);
 	}
 
 }
