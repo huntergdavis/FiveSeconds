@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.gameutils.rendering.UIThreadMessages;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
 public class DotDotDotJump extends Activity {
@@ -26,13 +30,28 @@ public class DotDotDotJump extends Activity {
 	private int timesResumed = 0;	
 	
 	
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == UIThreadMessages.UPDATEFPS.value()) {
+				//TextView fpsView = (TextView) findViewById(R.id.fps);
+				double fps = msg.arg1;
+				//fpsView.setText("FPS: " + fps);
+			} else if (msg.what == UIThreadMessages.SCREENRESIZED.value()) {
+				
+			} 
+			super.handleMessage(msg);
+		}
+	};
+	
+	
 	/**
-	 * Start pop x color baloons screen.
+	 * Start dotdotdotjump screen.
 	 * 
 	 * @param context
 	 *            the context
-	 * @param numberBaloonsToMatch
-	 *            the number baloons to match
+	 * @param setDifficulty
+	 *            what difficulty level to use
 	 */
 	public static final void startDotDotDotJumpScreen(Context context,
 			int setDifficulty) {

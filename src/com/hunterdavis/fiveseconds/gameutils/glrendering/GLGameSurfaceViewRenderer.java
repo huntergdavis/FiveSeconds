@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.hunterdavis.fiveseconds.gameutils.core.SharedGameData;
 import com.hunterdavis.fiveseconds.gameutils.rendering.UIThreadMessages;
 
 import android.content.Context;
@@ -14,7 +15,7 @@ import android.opengl.GLUtils;
 import android.os.Handler;
 import android.os.Message;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class GameSurfaceView.
  */
@@ -42,6 +43,9 @@ public abstract class GLGameSurfaceViewRenderer implements
 
 	private int mSurfaceWidth;
 	private int mSurfaceHeight;
+	
+	// shared game data
+	SharedGameData sharedGameData;
 
 	/**
 	 * Instantiates a new GL game surface view.
@@ -51,18 +55,21 @@ public abstract class GLGameSurfaceViewRenderer implements
 	 * @param attrs
 	 *            the attrs
 	 */
-	public GLGameSurfaceViewRenderer(Context contexta, Handler handlera, int[] texturesToLoad) {
+	public GLGameSurfaceViewRenderer(Context contexta, Handler handlera, int[] texturesToLoad, SharedGameData shareData) {
 		this.context = contexta;
 		this.handler = handlera;
 		textures = new int[texturesToLoad.length];
 		textureDrawableReferences = texturesToLoad;
+		sharedGameData = shareData;
 	}
 	/**
-	 * Update game state.
+	 * let the game know a frame has been drawn
 	 */
-	public abstract void updateGameState();
+	public void incrementDrawnFrames() {
+		sharedGameData.updateFrames();
+	}
 
-	// override this method and FPS drawing calculation is automatic
+	// inherit this method and FPS drawing calculation is automatic
 	public void onDrawFrame(GL10 gl) {
 
 		long postRenderTime = System.currentTimeMillis();
@@ -70,7 +77,7 @@ public abstract class GLGameSurfaceViewRenderer implements
 			int time = (int) (postRenderTime - lastFrameDraw);
 			frameSampleTime += time;
 			frameSamplesCollected++;
-			if (frameSamplesCollected == 10) {
+			if (frameSamplesCollected == 60) {
 				fps = (int) (10000 / frameSampleTime);
 				frameSampleTime = 0;
 				frameSamplesCollected = 0;
@@ -83,6 +90,7 @@ public abstract class GLGameSurfaceViewRenderer implements
 			}
 		}
 		lastFrameDraw = postRenderTime;
+		incrementDrawnFrames();
 	}
 	
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
