@@ -8,5 +8,8 @@ public class DDDJSharedGameData extends SharedGameData {
 	public Object getGameData() {
 		return null;
 	}
+	
+	public DDDJSharedGameData() {
+	}
 
 }

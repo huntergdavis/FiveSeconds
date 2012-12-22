@@ -13,6 +13,7 @@ import com.crittercism.app.Crittercism;
 import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.PopXColorBalloons;
+import com.hunterdavis.fiveseconds.games.dotdotdotjump.DotDotDotJump;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
 // TODO: Auto-generated Javadoc
@@ -52,7 +53,7 @@ public class GameSelectScreen extends Activity {
 				TitleScreen.startTitleScreen(getApplicationContext(),
 						R.raw.compressedtitletheme,
 						R.drawable.fivesecondstitle, false/* touchToExit */,
-						true/* exitOnWavComplete */, -1/* timeout */);
+						true/* exitOnWavComplete */, -1/* timeout */, false /*landscape mode*/);
 			}
 		});
 
@@ -61,6 +62,14 @@ public class GameSelectScreen extends Activity {
 			public void onClick(View v) {
 				PopXColorBalloons.startPopXColorBaloonsScreen(
 						getApplicationContext(), 3 + (new Random().nextInt(2)));
+			}
+		});
+		
+		
+		Button tesdddButton = (Button) findViewById(R.id.testdddjumpbutton);
+		tesdddButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				DotDotDotJump.startDotDotDotJumpScreen(v.getContext(), 1);
 			}
 		});
 

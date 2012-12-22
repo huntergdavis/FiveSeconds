@@ -3,6 +3,7 @@ package com.hunterdavis.fiveseconds.title;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -39,6 +40,8 @@ public class TitleScreen extends Activity implements
 	
 	/** The Constant timeoutIntegerID. */
 	public static final String timeoutIntegerID = "timeout";
+	
+	public static final String landscapeModeID = "landscape";
 
 	/** The img reference. */
 	private int imgReference = -1;
@@ -55,6 +58,8 @@ public class TitleScreen extends Activity implements
 	/** The timeout. */
 	private int timeout = -1;
 	
+	private boolean landscapeMode = false;
+	
 	/** The audio manager. */
 	private EasyAudioManager audioManager;
 
@@ -70,7 +75,7 @@ public class TitleScreen extends Activity implements
 	 */
 	public static final void startTitleScreen(Context context, int wavRefId,
 			int imageRefId, boolean touchToExit, boolean exitOnWavComplete,
-			int timeout) {
+			int timeout, boolean landscapeMode) {
 		// create the new title screen intent
 		Intent titleIntent = new Intent(context, TitleScreen.class);
 		titleIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -82,6 +87,9 @@ public class TitleScreen extends Activity implements
 		if (imageRefId != -1) {
 			titleIntent
 					.putExtra(TitleScreen.imageReferenceIDString, imageRefId);
+		}
+		if(landscapeMode == true) {
+			titleIntent.putExtra(TitleScreen.landscapeModeID, true);
 		}
 
 		titleIntent.putExtra(TitleScreen.exitOnWavePlayBooleanID,
@@ -110,7 +118,12 @@ public class TitleScreen extends Activity implements
 					true);
 			exitOnWavPlay = startIntent.getBooleanExtra(
 					exitOnWavePlayBooleanID, false);
+			landscapeMode = startIntent.getBooleanExtra(landscapeModeID, false);
 			timeout = startIntent.getIntExtra(timeoutIntegerID, -1);
+		}
+		
+		if(landscapeMode == true) {
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 
 		// Set window fullscreen and remove title bar

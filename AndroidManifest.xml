@@ -34,10 +34,14 @@
         </activity>
         <activity
             android:name=".games.dotdotdotjump.DotDotDotJump"
-            android:label="@string/dotdotdotjump_activity_credits_screen" >
-        </activity>        
+            android:label="@string/dotdotdotjump_activity_credits_screen"
+            android:screenOrientation="landscape" 
+            android:hardwareAccelerated="true"
+            
+            >
+        </activity>
         <!-- Start of Crittercism.com Code -->
-        	<activity android:name="com.crittercism.NotificationActivity" />
+        <activity android:name="com.crittercism.NotificationActivity" />
         <!-- End of Crittercism.com Code -->
     </application>
 

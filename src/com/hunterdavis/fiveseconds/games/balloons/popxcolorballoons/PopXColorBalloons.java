@@ -79,7 +79,7 @@ public class PopXColorBalloons extends Activity {
 				.startTitleScreen(getApplicationContext(),
 						R.raw.popxcolorballoonstitletheme,
 						R.drawable.popxcolorbaloonstitle, true/* touchToExit */,
-						false /* exitOnWavComplete */, 3000/* timeout */);
+						false /* exitOnWavComplete */, 3000/* timeout */, false /*landscape mode*/);
 
 	}
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
+import com.hunterdavis.fiveseconds.gameutils.core.SharedGameData;
 import com.hunterdavis.fiveseconds.gameutils.rendering.UIThreadMessages;
+import com.hunterdavis.fiveseconds.gameutils.time.FPSClockTimer;
+import com.hunterdavis.fiveseconds.gameutils.time.GameClockCountDownTimer;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
 
 public class DotDotDotJump extends Activity {
@@ -22,25 +26,31 @@ public class DotDotDotJump extends Activity {
 	/** The Constant numberToMatch. */
 	public static final String DIFFICULTYID = "difficulty";
 	private static int mDifficultyLevel = 1;
-	
+
 	/** The audio manager. */
 	EasyAudioManager audioManager;
 
+	// the gl surfaceview
+	private GLSurfaceView glSurfaceView;
+	private DDDJGLRenderer glRenderer;
+	private DDDJSharedGameData sharedGameData;
+	
+	// the fps view
+	private FPSClockTimer fpsClockTimer;
+
 	/** The times resumed. */
-	private int timesResumed = 0;	
-	
-	
+	private int timesResumed = 0;
+
 	final Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == UIThreadMessages.SCREENRESIZED.value()) {
-				
-			} 
+
+			}
 			super.handleMessage(msg);
 		}
 	};
-	
-	
+
 	/**
 	 * Start dotdotdotjump screen.
 	 * 
@@ -50,16 +60,16 @@ public class DotDotDotJump extends Activity {
 	 *            what difficulty level to use
 	 */
 	public static final void startDotDotDotJumpScreen(Context context,
-			int setDifficulty) {
+			int difficultyLevel) {
 		// create the new title screen intent
-		Intent baloonsIntent = new Intent(context, DotDotDotJump.class);
-		baloonsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		baloonsIntent.putExtra(DIFFICULTYID, setDifficulty);
+		Intent dotIntent = new Intent(context, DotDotDotJump.class);
+		dotIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		dotIntent.putExtra(DIFFICULTYID, difficultyLevel);
 
 		// start title screen.
-		context.startActivity(baloonsIntent);
+		context.startActivity(dotIntent);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -86,7 +96,7 @@ public class DotDotDotJump extends Activity {
 				.startTitleScreen(getApplicationContext(),
 						R.raw.popxcolorballoonstitletheme,
 						R.drawable.jumptitle, true/* touchToExit */,
-						false /* exitOnWavComplete */, 3000/* timeout */);
+						false /* exitOnWavComplete */, 3000/* timeout */, true /*landscape mode*/);
 
 	}
 
@@ -98,9 +108,12 @@ public class DotDotDotJump extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		//if (popManyBaloonPanel != null) {
-		//	popManyBaloonPanel.terminateThread();
-		//}
+		if (glSurfaceView != null) {
+			glSurfaceView.onPause();
+		}
+		// if (popManyBaloonPanel != null) {
+		// popManyBaloonPanel.terminateThread();
+		// }
 		if ((audioManager != null) && (audioManager.songPlaying)) {
 			audioManager.pauseSong();
 		}
@@ -116,17 +129,30 @@ public class DotDotDotJump extends Activity {
 	protected void onResume() {
 		super.onResume();
 		timesResumed++;
+		if (glSurfaceView != null) {
+			glSurfaceView.onResume();
+		}
 		if (timesResumed > 1) {
-			setContentView(R.layout.generic_opengl_surfaceview);
+
+			// Create our surface view and set it as the background content of
+			// our
+			// Activity
+			setContentView(R.layout.dotdotdotjump);
+			glSurfaceView = (GLSurfaceView) findViewById(R.id.glESView);
+			sharedGameData = new DDDJSharedGameData();
+			glRenderer = new DDDJGLRenderer(this, handler, null,
+					sharedGameData, true);
+			glSurfaceView.setRenderer(glRenderer);
 			
-			// at this point the layout should be inflated, so
-			// do some openGL stuff here
+			fpsClockTimer = new FPSClockTimer(500000, 100, this, R.id.fpsCounter,sharedGameData);
+			fpsClockTimer.start();
 			
 			// create the audioManager
 			int[] soundBites = new int[1];
 			soundBites[0] = R.raw.balloonpop;
 			audioManager = new EasyAudioManager(this, soundBites);
-			audioManager.setSongAndOnComplete(this, R.raw.popxcolorballoonsgametheme,
+			audioManager.setSongAndOnComplete(this,
+					R.raw.popxcolorballoonsgametheme,
 					new OnCompletionListener() {
 
 						@Override
@@ -137,11 +163,6 @@ public class DotDotDotJump extends Activity {
 
 					});
 			audioManager.playSong();
-
-			//popManyBaloonPanel.setAudioManager(audioManager);
-			//if (popManyBaloonPanel.surfaceCreated == true) {
-			//	popManyBaloonPanel.createThread(popManyBaloonPanel.getHolder());
-			//}
 		}
 
 	}
@@ -154,12 +175,13 @@ public class DotDotDotJump extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+
 		if (audioManager != null) {
 			if (audioManager.songPlaying) {
 				audioManager.pauseSong();
 			}
 			audioManager = null;
 		}
-	}	
-	
+	}
+
 }

@@ -36,5 +36,13 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/testtitlebutton1"
         android:text="Test Pop X Color Balloons Screen" />
+    
+    <Button
+        android:id="@+id/testdddjumpbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/testopopxcolorbaloonsbutton1"
+        android:text="Test Dot Dot Dot Jump Screen" />
 
 </RelativeLayout>

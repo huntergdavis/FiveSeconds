@@ -15,7 +15,6 @@ import android.opengl.GLUtils;
 import android.os.Handler;
 import android.os.Message;
 
-
 /**
  * The Class GameSurfaceView.
  */
@@ -30,8 +29,8 @@ public abstract class GLGameSurfaceViewRenderer implements
 	// FPS timer
 	double lastTick = -1;
 	private long lastFrameDraw = 0;
-	private int frameSamplesCollected = 0;
-	private int frameSampleTime = 0;
+	private long frameSamplesCollected = 0;
+	private long frameSampleTime = 0;
 	private double fps = 0;
 	private boolean drawFPS = false;
 	/** The texture pointer */
@@ -43,7 +42,7 @@ public abstract class GLGameSurfaceViewRenderer implements
 
 	private int mSurfaceWidth;
 	private int mSurfaceHeight;
-	
+
 	// shared game data
 	SharedGameData sharedGameData;
 
@@ -55,13 +54,20 @@ public abstract class GLGameSurfaceViewRenderer implements
 	 * @param attrs
 	 *            the attrs
 	 */
-	public GLGameSurfaceViewRenderer(Context contexta, Handler handlera, int[] texturesToLoad, SharedGameData shareData, boolean drawFPS) {
+	public GLGameSurfaceViewRenderer(Context contexta, Handler handlera,
+			int[] texturesToLoad, SharedGameData shareData, boolean shouldWeDrawFPS) {
 		this.context = contexta;
 		this.handler = handlera;
-		textures = new int[texturesToLoad.length];
+		if (texturesToLoad != null) {
+			if (texturesToLoad.length > 0) {
+				textures = new int[texturesToLoad.length];
+			}
+		}
 		textureDrawableReferences = texturesToLoad;
 		sharedGameData = shareData;
+		drawFPS = shouldWeDrawFPS;
 	}
+
 	/**
 	 * let the game know a frame has been drawn
 	 */
@@ -74,11 +80,11 @@ public abstract class GLGameSurfaceViewRenderer implements
 
 		long postRenderTime = System.currentTimeMillis();
 		if (lastFrameDraw != 0) {
-			int time = (int) (postRenderTime - lastFrameDraw);
+			long time = (long) (postRenderTime - lastFrameDraw);
 			frameSampleTime += time;
 			frameSamplesCollected++;
 			if (frameSamplesCollected == 60) {
-				fps = (10000 / frameSampleTime);
+				fps = (60000 / frameSampleTime);
 				frameSampleTime = 0;
 				frameSamplesCollected = 0;
 				if (drawFPS) {
@@ -89,48 +95,50 @@ public abstract class GLGameSurfaceViewRenderer implements
 		lastFrameDraw = postRenderTime;
 		incrementDrawnFrames();
 	}
-	
+
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
 		// Load the textures
-		for(int i = 0;i<textures.length;i++) {
-			createGlobalTextureObject(gl, this.context, i);
+		if (textures != null) {
+			for (int i = 0; i < textures.length; i++) {
+				createGlobalTextureObject(gl, this.context, i);
+			}
 		}
 
-		// should we really set default values in a parent class?  think on this
-		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping 
-		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
-		gl.glClearDepthf(1.0f); // Depth Buffer Setup
-		gl.glEnable(GL10.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL10.GL_LEQUAL); // The Type Of Depth Testing To Do
+		// should we really set default values in a parent class? think on this
+		//gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping
+		//gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
+		//gl.glClearDepthf(1.0f); // Depth Buffer Setup
+		//gl.glEnable(GL10.GL_DEPTH_TEST); // Enables Depth Testing
+		//gl.glDepthFunc(GL10.GL_LEQUAL); // The Type Of Depth Testing To Do
 
 		// perspective calculations
-		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
+		//gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
 	}
-	
+
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		checkGLError(gl);
 		mSurfaceWidth = width;
 		mSurfaceHeight = height;
 		gl.glViewport(0, 0, width, height);
-		
-		
+
 		Message msg = handler.obtainMessage();
 		msg.what = UIThreadMessages.SCREENRESIZED.value();
 		handler.sendMessage(msg);
-		
+
 	}
-	
+
 	public int getWidth() {
 		return mSurfaceWidth;
 	}
-	
+
 	public int getHeight() {
 		return mSurfaceHeight;
 	}
-	
-	private void createGlobalTextureObject(GL10 gl, Context context, int textureToLoadIndex) {
+
+	private void createGlobalTextureObject(GL10 gl, Context context,
+			int textureToLoadIndex) {
 
 		// loading texture
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
