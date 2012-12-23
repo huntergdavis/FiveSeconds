@@ -19,7 +19,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
+import com.hunterdavis.gameutils.rendering.GameSurfaceView;
 
 // TODO: Auto-generated Javadoc
 /**

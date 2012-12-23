@@ -5,9 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
-import com.hunterdavis.fiveseconds.gameutils.glrendering.GLGameSurfaceViewRenderer;
+import com.hunterdavis.gameutils.glrendering.GLGameSurfaceViewRenderer;
 
 public class DDDJGLRenderer extends GLGameSurfaceViewRenderer {
 

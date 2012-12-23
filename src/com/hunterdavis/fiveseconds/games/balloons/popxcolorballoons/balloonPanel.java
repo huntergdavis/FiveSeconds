@@ -15,10 +15,10 @@ import android.view.SurfaceHolder;
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
 import com.hunterdavis.fiveseconds.credits.CreditsScreen;
-import com.hunterdavis.fiveseconds.gameutils.rendering.GameCanvasThread;
-import com.hunterdavis.fiveseconds.gameutils.rendering.GameSurfaceView;
-import com.hunterdavis.fiveseconds.gameutils.rendering.namedColor;
-import com.hunterdavis.fiveseconds.gameutils.time.GameClockCountDownTimer;
+import com.hunterdavis.gameutils.rendering.GameCanvasThread;
+import com.hunterdavis.gameutils.rendering.GameSurfaceView;
+import com.hunterdavis.gameutils.rendering.namedColor;
+import com.hunterdavis.gameutils.time.GameClockCountDownTimer;
 
 // TODO: Auto-generated Javadoc
 /**

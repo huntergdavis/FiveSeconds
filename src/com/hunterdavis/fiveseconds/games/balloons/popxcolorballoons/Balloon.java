@@ -5,11 +5,11 @@ import java.util.Random;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 
-import com.hunterdavis.fiveseconds.gameutils.rendering.Effects;
-import com.hunterdavis.fiveseconds.gameutils.rendering.renderMath;
+import com.hunterdavis.gameutils.rendering.Effects;
+import com.hunterdavis.gameutils.rendering.renderMath;
 
 // TODO: Auto-generated Javadoc
 // each credits line is a tiny inner class for storing credits lines

@@ -1,6 +1,6 @@
 package com.hunterdavis.fiveseconds.games.dotdotdotjump;
 
-import com.hunterdavis.fiveseconds.gameutils.core.GameThread;
+import com.hunterdavis.gameutils.core.GameThread;
 
 public class DDDJGameThread extends GameThread {
 

@@ -11,15 +11,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.gameutils.core.SharedGameData;
-import com.hunterdavis.fiveseconds.gameutils.rendering.UIThreadMessages;
-import com.hunterdavis.fiveseconds.gameutils.time.FPSClockTimer;
-import com.hunterdavis.fiveseconds.gameutils.time.GameClockCountDownTimer;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
+import com.hunterdavis.gameutils.rendering.UIThreadMessages;
+import com.hunterdavis.gameutils.time.FPSClockTimer;
 
 public class DotDotDotJump extends Activity {
 
@@ -34,6 +31,7 @@ public class DotDotDotJump extends Activity {
 	private GLSurfaceView glSurfaceView;
 	private DDDJGLRenderer glRenderer;
 	private DDDJSharedGameData sharedGameData;
+	private DDDJGameThread gameThread;
 	
 	// the fps view
 	private FPSClockTimer fpsClockTimer;
@@ -111,6 +109,10 @@ public class DotDotDotJump extends Activity {
 		if (glSurfaceView != null) {
 			glSurfaceView.onPause();
 		}
+		
+		if(gameThread != null) {
+			gameThread.setRunning(false);
+		}
 		// if (popManyBaloonPanel != null) {
 		// popManyBaloonPanel.terminateThread();
 		// }
@@ -146,6 +148,9 @@ public class DotDotDotJump extends Activity {
 			
 			fpsClockTimer = new FPSClockTimer(500000, 100, this, R.id.fpsCounter,sharedGameData);
 			fpsClockTimer.start();
+			
+			gameThread = new DDDJGameThread(sharedGameData, 10);
+			gameThread.run();
 			
 			// create the audioManager
 			int[] soundBites = new int[1];

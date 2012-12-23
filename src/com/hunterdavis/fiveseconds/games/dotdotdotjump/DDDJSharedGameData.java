@@ -1,6 +1,6 @@
 package com.hunterdavis.fiveseconds.games.dotdotdotjump;
 
-import com.hunterdavis.fiveseconds.gameutils.core.SharedGameData;
+import com.hunterdavis.gameutils.core.SharedGameData;
 
 public class DDDJSharedGameData extends SharedGameData {
 
