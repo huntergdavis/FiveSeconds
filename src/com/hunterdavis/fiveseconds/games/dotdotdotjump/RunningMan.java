@@ -2,6 +2,9 @@ package com.hunterdavis.fiveseconds.games.dotdotdotjump;
 
 import java.util.Vector;
 
+import android.graphics.Rect;
+import android.graphics.RectF;
+
 import com.hunterdavis.gameutils.glrendering.XYZTuple;
 
 /*
@@ -27,8 +30,15 @@ public class RunningMan {
 	private RunningLimb rightArm;
 	private RunningLimb leftLeg;
 	private RunningLimb rightLeg;
-
-	public void RunningMan() {
+	
+	// bounding box
+	private RectF mBoundingBox;
+	
+	// int currentModelTick
+	int currentModelTick;
+	
+	private void initiateAllMembers() {
+		currentModelTick = 0;
 		bodyBottom = new XYZTuple();
 		bodyTop = new XYZTuple();
 		neckBottom = new XYZTuple();
@@ -39,9 +49,27 @@ public class RunningMan {
 		leftLeg = new RunningLimb();
 		rightArm = new RunningLimb();
 		rightLeg = new RunningLimb();
+		mBoundingBox = new RectF();
+	}
+	
+	public void RunningMan(RectF boundingBox) {
+		// initiate all members
+		initiateAllMembers();
+		
+		mBoundingBox = boundingBox;
+		calculateInitialBodyPositionFromBoundingBox(boundingBox);
 	}
 
-	public void updatePlayerModelPosition() {
+	private void calculateInitialBodyPositionFromBoundingBox(RectF boundingBox) {
+		
+	}
+
+	public void RunningMan() {
+		initiateAllMembers();
+	}
+
+	public void updatePlayerModelPositionATick() {
+		currentModelTick++;
 		calculateBodyPosition();
 
 		calculateHeadAndNeckPosition();
