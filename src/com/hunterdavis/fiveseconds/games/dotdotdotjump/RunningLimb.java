@@ -1,15 +1,15 @@
 package com.hunterdavis.fiveseconds.games.dotdotdotjump;
 
+import android.util.Pair;
+
 import com.hunterdavis.gameutils.glrendering.XYZTuple;
 
 public class RunningLimb {
 	// upper limb position
-	private XYZTuple mUpperLimbStart;
-	private XYZTuple mUpperLimbEnd;
+	private  Pair<XYZTuple, XYZTuple> mUpperLimbStartToEnd;
 
 	// left lower limb position
-	private XYZTuple mLowerLimbStart;
-	private XYZTuple mLowerLimbEnd;
+	private Pair<XYZTuple, XYZTuple> mLowerLimbStartToEnd;
 
 	// hand/foot position
 	private XYZTuple mHandFootCenter;
@@ -18,47 +18,35 @@ public class RunningLimb {
 	public void RunningLimb(XYZTuple upperStart, XYZTuple upperEnd,
 			XYZTuple lowerStart, XYZTuple lowerEnd, XYZTuple handFootCenter,
 			float handFootSize) {
-		mUpperLimbStart = upperStart;
-		mUpperLimbEnd = upperEnd;
-		mLowerLimbStart = lowerStart;
-		mLowerLimbEnd = lowerEnd;
+		mUpperLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(upperStart, upperEnd);
+		mLowerLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(lowerStart, lowerEnd);
+		
 		mHandFootCenter = handFootCenter;
 		mHandFootSize = handFootSize;
 	}
 
 	public void RunningLimb() {
-		mUpperLimbStart = new XYZTuple();
-		mUpperLimbEnd = new XYZTuple();
-		mLowerLimbStart = new XYZTuple();
-		mLowerLimbEnd = new XYZTuple();
+		mUpperLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(new XYZTuple(),new XYZTuple());
+		mLowerLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(new XYZTuple(),new XYZTuple());
+		
 		mHandFootCenter = new XYZTuple();
 		mHandFootSize = 0.0f;
 	}
 
-	public synchronized void setUpperLimbPosition(XYZTuple start, XYZTuple end) {
-		mUpperLimbStart = start;
-		mUpperLimbEnd = end;
+	public synchronized void setUpperLimbPosition(Pair<XYZTuple, XYZTuple> startToEnd) {
+		mUpperLimbStartToEnd = startToEnd;
+	}
+	
+	public synchronized Pair<XYZTuple, XYZTuple> getUpperLimbPositions() {
+		return mUpperLimbStartToEnd;
 	}
 
-	public synchronized XYZTuple getUpperLimbStart() {
-		return mUpperLimbStart;
+	public synchronized void setLowerLimbPosition(Pair<XYZTuple, XYZTuple> startToEnd) {
+		mUpperLimbStartToEnd = startToEnd;
 	}
 
-	public synchronized XYZTuple getUpperLimbEnd() {
-		return mUpperLimbEnd;
-	}
-
-	public synchronized void setLowerLimbPosition(XYZTuple start, XYZTuple end) {
-		mLowerLimbStart = start;
-		mLowerLimbEnd = end;
-	}
-
-	public synchronized XYZTuple getLowerLimbStart() {
-		return mLowerLimbStart;
-	}
-
-	public synchronized XYZTuple getLowerLimbEnd() {
-		return mLowerLimbEnd;
+	public synchronized Pair<XYZTuple, XYZTuple> getLowerLimbPositions() {
+		return mLowerLimbStartToEnd;
 	}
 
 	public synchronized void setHandFootPosition(XYZTuple center, float size) {
