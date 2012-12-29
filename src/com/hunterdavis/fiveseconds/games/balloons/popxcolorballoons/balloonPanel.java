@@ -112,8 +112,9 @@ class balloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 				} else if (gameOver) {
 					CreditsScreen.startCreditScreen(getContext(),
 							R.raw.popxcolorballoonscreditstheme,
-							R.raw.popxcolorballoonscredits, R.drawable.hunterredbaloon, "You popped "
-									+ numBalloonsToWin + " " + colorToWinName
+							R.raw.popxcolorballoonscredits,
+							R.drawable.hunterredbaloon, "You popped "
+									+ getBaloonPopCount(colorToWin) + " " + colorToWinName
 									+ " balloons");
 					doLose();
 				}
@@ -342,6 +343,15 @@ class balloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 		}
+	}
+
+	public int getBaloonPopCount(int color) {
+		for (int i = 0; i < colors.length; i++) {
+			if (colors[i].color == color) {
+				return colorHitCount[i];
+			}
+		}
+		return 0;
 	}
 
 	/**
