@@ -1,20 +1,18 @@
 package com.hunterdavis.fiveseconds.ui;
 
-import java.util.Random;
-
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.crittercism.app.Crittercism;
+import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.credits.CreditsScreen;
-import com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.PopXColorBalloons;
-import com.hunterdavis.fiveseconds.games.dotdotdotjump.DotDotDotJump;
 import com.hunterdavis.fiveseconds.title.TitleScreen;
+import com.viewpagerindicator.TabPageIndicator;
 
 // TODO: Auto-generated Javadoc
 // The game select screen is the main 'hub' of 5 seconds
@@ -22,7 +20,18 @@ import com.hunterdavis.fiveseconds.title.TitleScreen;
 /**
  * The Class GameSelectScreen.
  */
-public class GameSelectScreen extends Activity {
+public class GameSelectScreen extends FragmentActivity {
+
+	// view pager members
+	android.support.v4.view.ViewPager mPager;
+	TabPageIndicator mIndicator;
+	GameSelectFragmentAdapter mAdapter;
+
+	/** The times resumed. */
+	private int timesResumed = 0;
+
+	/** The audio manager. */
+	EasyAudioManager audioManager;
 
 	/*
 	 * (non-Javadoc)
@@ -33,46 +42,84 @@ public class GameSelectScreen extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// crittercism
-		Crittercism.init(getApplicationContext(), "50c2a35f866b8466c9000005");
+		// Set window fullscreen and remove title bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		setContentView(R.layout.activity_game_select_screen);
+		// create a title screen and throw it up
+		TitleScreen.startTitleScreen(getApplicationContext(),
+				R.raw.compressedtitletheme, R.drawable.fivesecondstitle,
+				true/* touchToExit */, false /* exitOnWavComplete */,
+				3000/* timeout */, false /* force landscape mode */);
+	}
 
-		Button testCreditsButton = (Button) findViewById(R.id.testcreditsbutton1);
-		testCreditsButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				CreditsScreen.startCreditScreen(getApplicationContext(),
-						R.raw.compressedtitletheme, R.raw.fivesecondscredits,
-						-1 /* no final image */, "Final Score: 50pts");
-			}
-		});
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if ((audioManager != null) && (audioManager.songPlaying)) {
+			audioManager.pauseSong();
+		}
+		System.gc();
+	}
 
-		Button testTitleButton = (Button) findViewById(R.id.testtitlebutton1);
-		testTitleButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				TitleScreen.startTitleScreen(getApplicationContext(),
-						R.raw.compressedtitletheme,
-						R.drawable.fivesecondstitle, false/* touchToExit */,
-						true/* exitOnWavComplete */, -1/* timeout */, false /*landscape mode*/);
-			}
-		});
+	@Override
+	protected void onResume() {
+		super.onResume();
+		timesResumed++;
+		if (timesResumed == 2) {
 
-		Button testPopXColorBaloonsButton = (Button) findViewById(R.id.testopopxcolorbaloonsbutton1);
-		testPopXColorBaloonsButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				PopXColorBalloons.startPopXColorBaloonsScreen(
-						getApplicationContext(), 3 + (new Random().nextInt(2)));
-			}
-		});
-		
-		
-		Button tesdddButton = (Button) findViewById(R.id.testdddjumpbutton);
-		tesdddButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				DotDotDotJump.startDotDotDotJumpScreen(v.getContext(), 1);
-			}
-		});
+			// crittercism
+			Crittercism.init(getApplicationContext(),
+					"50c2a35f866b8466c9000005");
 
+			setContentView(R.layout.activity_game_select_screen);
+
+			mAdapter = new GameSelectFragmentAdapter(
+					getSupportFragmentManager());
+
+			mPager = (android.support.v4.view.ViewPager) findViewById(R.id.gameSelectPager);
+			mPager.setAdapter(mAdapter);
+
+			mIndicator = (TabPageIndicator) findViewById(R.id.gameSelectTitlePageIndicator);
+			mIndicator.setViewPager(mPager);
+			
+
+			mIndicator.setOnPageChangeListener(new OnPageChangeListener() {
+
+				@Override
+				public void onPageSelected(int arg0) {
+					playGameThemeMusic(getApplicationContext(), arg0);
+				}
+
+				@Override
+				public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+				}
+
+				@Override
+				public void onPageScrollStateChanged(int arg0) {
+
+				}
+			});
+
+		}
+
+	}
+
+	public void playGameThemeMusic(Context context, int pageId) {
+		if (audioManager == null) {
+			// create the audioManager
+			audioManager = new EasyAudioManager(this, null);
+		}
+		if (audioManager.songPlaying) {
+			audioManager.pauseSong();
+		}
+		audioManager.setSong(
+				context,
+				GameSelectScreenResources.getMusicForPageAtPosition(pageId
+						% GameSelectScreenResources.GAMETITLEMUSIC.length));
+		audioManager.playSong();
 	}
 
 	/*
