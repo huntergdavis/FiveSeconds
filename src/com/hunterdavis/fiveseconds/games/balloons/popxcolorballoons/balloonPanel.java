@@ -14,7 +14,7 @@ import android.view.SurfaceHolder;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.credits.CreditsScreen;
+import com.hunterdavis.gameutils.credits.CreditsScreen;
 import com.hunterdavis.gameutils.rendering.GameCanvasThread;
 import com.hunterdavis.gameutils.rendering.GameSurfaceView;
 import com.hunterdavis.gameutils.rendering.namedColor;
@@ -513,7 +513,6 @@ class balloonPanel extends GameSurfaceView implements SurfaceHolder.Callback {
 	public void setNumBaloonsToWin(int numBaloonsToSet) {
 		numBalloonsToWin = numBaloonsToSet;
 		numBalloons = numBalloonsToWin * 10;
-
 	}
 
 	// setAudioManager is a setter method for the audio manager

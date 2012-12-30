@@ -14,9 +14,9 @@ import android.view.WindowManager;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.title.TitleScreen;
 import com.hunterdavis.gameutils.rendering.UIThreadMessages;
 import com.hunterdavis.gameutils.time.FPSClockTimer;
+import com.hunterdavis.gameutils.title.TitleScreen;
 
 public class DotDotDotJump extends Activity {
 

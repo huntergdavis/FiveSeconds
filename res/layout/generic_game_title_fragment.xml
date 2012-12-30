@@ -20,6 +20,6 @@
         ads:adSize="BANNER"
         ads:adUnitId="a150df41144503a"
         ads:loadAdOnCreate="true"
-         />
+         />      
 
 </LinearLayout>

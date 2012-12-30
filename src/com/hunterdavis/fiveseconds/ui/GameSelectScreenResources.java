@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.credits.CreditsScreen;
 import com.hunterdavis.fiveseconds.games.balloons.popxcolorballoons.PopXColorBalloons;
 import com.hunterdavis.fiveseconds.games.dotdotdotjump.DotDotDotJump;
-import com.hunterdavis.fiveseconds.title.TitleScreen;
+import com.hunterdavis.gameutils.credits.CreditsScreen;
+import com.hunterdavis.gameutils.title.TitleScreen;
 
 public class GameSelectScreenResources {
 	public static final String[] GAMETITLES = new String[] { "Title Screen",

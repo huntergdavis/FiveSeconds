@@ -8,7 +8,7 @@
         android:targetSdkVersion="15" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -24,11 +24,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".title.TitleScreen"
+            android:name="com.hunterdavis.gameutils.title.TitleScreen"
             android:label="@string/title_activity_game_select_screen" >
         </activity>
         <activity
-            android:name=".credits.CreditsScreen"
+            android:name="com.hunterdavis.gameutils.credits.CreditsScreen"
             android:label="@string/title_activity_credits_screen" >
         </activity>
         <activity

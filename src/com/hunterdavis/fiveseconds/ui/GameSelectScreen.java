@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import com.crittercism.app.Crittercism;
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.fiveseconds.title.TitleScreen;
+import com.hunterdavis.gameutils.title.TitleScreen;
 import com.viewpagerindicator.TabPageIndicator;
 
 // TODO: Auto-generated Javadoc
