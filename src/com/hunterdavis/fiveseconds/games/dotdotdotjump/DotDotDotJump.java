@@ -3,6 +3,8 @@ package com.hunterdavis.fiveseconds.games.dotdotdotjump;
 import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -18,14 +20,10 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.WindowManager;
 
 import com.hunterdavis.easyaudiomanager.EasyAudioManager;
 import com.hunterdavis.fiveseconds.R;
-import com.hunterdavis.gameutils.rendering.UIThreadMessages;
-import com.hunterdavis.gameutils.time.FPSClockTimer;
 import com.hunterdavis.gameutils.title.TitleScreen;
 
 public class DotDotDotJump extends SimpleBaseGameActivity {
@@ -207,6 +205,20 @@ public class DotDotDotJump extends SimpleBaseGameActivity {
 
 			scene.attachChild(line);
 		}
+		
+		/* Make the Snake move every 0.5 seconds. */
+		scene.registerUpdateHandler(new TimerHandler(0.5f, true, new ITimerCallback() {
+			@Override
+			public void onTimePassed(final TimerHandler pTimerHandler) {
+				if(DotDotDotJump.this.isGameRunning()) {
+					
+					// update the body position
+					// TODO: hook up body position updates here, they'll get drawn later
+				}
+			}
+		}));
+		
+		
 		return scene;
 	}
 
