@@ -10,7 +10,8 @@ public class DDDJGameThread extends GameThread {
 
 	@Override
 	protected void updateGameState() {
-		
+		// update our model a tick
+		((DDDJSharedGameData) getSharedGameData()).getRunningMan().updatePlayerModelPositionATick();
 	}
 
 }

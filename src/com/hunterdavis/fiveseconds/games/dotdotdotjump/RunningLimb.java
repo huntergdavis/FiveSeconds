@@ -15,7 +15,7 @@ public class RunningLimb {
 	private XYZTuple mHandFootCenter;
 	private float mHandFootSize;
 
-	public void RunningLimb(XYZTuple upperStart, XYZTuple upperEnd,
+	public RunningLimb(XYZTuple upperStart, XYZTuple upperEnd,
 			XYZTuple lowerStart, XYZTuple lowerEnd, XYZTuple handFootCenter,
 			float handFootSize) {
 		mUpperLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(upperStart, upperEnd);
@@ -25,7 +25,7 @@ public class RunningLimb {
 		mHandFootSize = handFootSize;
 	}
 
-	public void RunningLimb() {
+	public RunningLimb() {
 		mUpperLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(new XYZTuple(),new XYZTuple());
 		mLowerLimbStartToEnd = new Pair<XYZTuple, XYZTuple>(new XYZTuple(),new XYZTuple());
 		

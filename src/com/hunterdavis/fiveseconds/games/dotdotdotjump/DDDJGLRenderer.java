@@ -4,7 +4,9 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.graphics.RectF;
 import android.os.Handler;
+import android.util.Log;
 
 import com.hunterdavis.gameutils.glrendering.GLGameSurfaceViewRenderer;
 
@@ -29,12 +31,41 @@ public class DDDJGLRenderer extends GLGameSurfaceViewRenderer {
 
 		// perspective calculations
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
+
 	}
-	
+
+	@Override
+	public void onSurfaceChanged(GL10 gl, int width, int height) {
+		super.onSurfaceChanged(gl, width, height);
+
+		Log.e("WIDTH", "WIDTH = " + width);
+		Log.e("HEIGHT", "HEIGHT = " + height);
+
+		gl.glViewport(0, 0, width, height);
+
+		// Clear the projection matrix
+		gl.glMatrixMode(GL10.GL_PROJECTION);
+		gl.glLoadIdentity();
+
+		// Set up orthographic projection mode (2D drawing)
+		gl.glOrthof(0, width, 0, height, 1, 0);
+
+		// update the bounding box for the running man
+		RectF boundingBox = new RectF();
+		boundingBox.bottom = 0;
+		boundingBox.top = height;
+		boundingBox.left = 0;
+		boundingBox.right = width;
+		((DDDJSharedGameData) sharedGameData)
+				.updateRunningManBoundingBox(boundingBox);
+	}
+
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		super.onDrawFrame(gl);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		((DDDJSharedGameData) sharedGameData).getRunningMan().draw(gl);
 	}
 
 }
